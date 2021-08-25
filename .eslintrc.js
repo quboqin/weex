@@ -6,8 +6,8 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/vue3-essential',
     'eslint:recommended',
+    'plugin:vue/vue3-essential',
     '@vue/typescript/recommended',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint',
@@ -15,6 +15,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2021,
   },
-  rules: {},
-  plugins: [],
+  rules: {
+    'prettier/prettier': 'error',
+  },
+  plugins: ['prettier'],
 }
