@@ -1,6 +1,6 @@
 <template>
   <div class="h-full">
-    <home-header>
+    <Header>
       <template v-slot:left>
         <p class="mdi mdi-view-grid-outline"></p>
       </template>
@@ -17,7 +17,7 @@
       <template v-slot:right>
         <p class="mdi mdi-cart"></p>
       </template>
-    </home-header>
+    </Header>
     <div class="mt-14">
       <van-tabs v-model:active="active" background="#fee2e2">
         <van-tab
@@ -31,22 +31,23 @@
         </van-tab>
       </van-tabs>
     </div>
-
-    <footer></footer>
+    <tab-bar></tab-bar>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, watch, toRefs } from 'vue'
 
-import HomeHeader from '@/components/Header.vue'
+import Header from '@/components/Header.vue'
+import TabBar from '@/components/TabBar.vue'
 
 import category from '@/mock/category.json'
 
 export default defineComponent({
   name: 'Home',
   components: {
-    HomeHeader,
+    Header,
+    TabBar,
   },
   setup() {
     const state = reactive({
