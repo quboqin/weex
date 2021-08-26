@@ -1,11 +1,11 @@
 <template>
-  <div>Home</div>
+  <div>CreditCardList</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'Home',
+  name: 'CreditCardList',
 })
 </script>
