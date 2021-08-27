@@ -1,10 +1,10 @@
 <template>
   <Header>
-    <template v-slot:left>
+    <template #left>
       <p class="mdi mdi-chevron-left text-2xl" @click="onBack"></p>
     </template>
 
-    <template v-slot:default>
+    <template #default>
       <div>{{ title }}</div>
     </template>
   </Header>

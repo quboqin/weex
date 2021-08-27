@@ -1,11 +1,11 @@
 <template>
   <div class="h-full">
     <Header>
-      <template v-slot:left>
+      <template #left>
         <p class="mdi mdi-view-grid-outline"></p>
       </template>
 
-      <template v-slot:default>
+      <template #default>
         <van-search
           v-model="searchValue"
           placeholder="请输入要搜索的商品"
@@ -14,7 +14,7 @@
         />
       </template>
 
-      <template v-slot:right>
+      <template #right>
         <p class="mdi mdi-cart"></p>
       </template>
     </Header>

@@ -1,6 +1,6 @@
 <template>
   <Header>
-    <template v-slot:default>
+    <template #default>
       <div>我的</div>
     </template>
   </Header>
