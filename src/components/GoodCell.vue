@@ -23,7 +23,7 @@
           10% off
         </div>
       </div>
-      <div class="text-sm text-left truncate px-2">
+      <div class="text-sm text-left truncate px-2 pt-1">
         {{ item.desc }}
       </div>
       <div class="text-base text-left text-red-500 font-semibold pl-2">

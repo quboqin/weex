@@ -21,14 +21,14 @@
     <div class="mt-14">
       <van-tabs v-model:active="active" background="#fee2e2">
         <van-tab
-          v-for="(category, index) in categoryList"
-          :title="category.name"
+          v-for="(item, index) in category"
+          :title="item.name"
           :key="index"
         >
           <div class="flex flex-wrap justify-start">
             <GoodCell
               v-for="item in goods"
-              :key="item.goodsId"
+              :key="item.id"
               :item="item"
               class="w-1/2"
             >
@@ -60,7 +60,7 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      categoryList: category,
+      category: category,
       goods: goods,
       searchValue: '',
       active: 0,
