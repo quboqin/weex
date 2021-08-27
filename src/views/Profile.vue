@@ -56,6 +56,7 @@
         justify-between
         p-2
       "
+      @click="onAddressList"
     >
       <div>我的地址</div>
       <p class="mdi mdi-chevron-right text-3xl text-center leading-none"></p>
@@ -82,6 +83,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 import Header from '@/components/Header.vue'
 import TabBar from '@/components/TabBar.vue'
@@ -97,14 +99,21 @@ export default defineComponent({
     TabBar,
   },
   setup() {
+    const router = useRouter()
+
     const state = reactive({
       avatarUrl,
       orderTypes: ['全部订单', '待付款', '待发货'],
       orderImages: [clock, box, trunk],
     })
 
+    function onAddressList() {
+      router.push('address-list')
+    }
+
     return {
       ...toRefs(state),
+      onAddressList,
     }
   },
 })
