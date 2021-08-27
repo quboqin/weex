@@ -73,6 +73,7 @@
         justify-between
         p-2
       "
+      @click="onCreditCardList"
     >
       <div>我的信用卡</div>
       <p class="mdi mdi-chevron-right text-3xl text-center leading-none"></p>
@@ -111,9 +112,14 @@ export default defineComponent({
       router.push('address-list')
     }
 
+    function onCreditCardList() {
+      router.push('credit-card-list')
+    }
+
     return {
       ...toRefs(state),
       onAddressList,
+      onCreditCardList,
     }
   },
 })
