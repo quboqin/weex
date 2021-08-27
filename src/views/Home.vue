@@ -25,8 +25,14 @@
           :title="category.name"
           :key="index"
         >
-          <div>
-            {{ category.name }}
+          <div class="flex flex-wrap justify-start">
+            <GoodCell
+              v-for="item in goods"
+              :key="item.goodsId"
+              :item="item"
+              class="w-1/2"
+            >
+            </GoodCell>
           </div>
         </van-tab>
       </van-tabs>
@@ -39,19 +45,23 @@
 import { defineComponent, reactive, watch, toRefs } from 'vue'
 
 import Header from '@/components/Header.vue'
+import GoodCell from '@/components/GoodCell.vue'
 import TabBar from '@/components/TabBar.vue'
 
 import category from '@/mock/category.json'
+import goods from '@/mock/goods.json'
 
 export default defineComponent({
   name: 'Home',
   components: {
     Header,
+    GoodCell,
     TabBar,
   },
   setup() {
     const state = reactive({
       categoryList: category,
+      goods: goods,
       searchValue: '',
       active: 0,
     })
