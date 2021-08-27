@@ -8,6 +8,9 @@
       :item="item"
       @click="onEditAddress(index)"
     ></AddressCell>
+    <div class="text-left mx-4 text-blue-400" @click="onAddAddress">
+      添加新的地址
+    </div>
   </div>
 </template>
 
@@ -40,9 +43,17 @@ export default defineComponent({
       })
     }
 
+    function onAddAddress() {
+      router.push({
+        name: 'AddressDetail',
+        params: undefined,
+      })
+    }
+
     return {
       ...toRefs(state),
       onEditAddress,
+      onAddAddress,
     }
   },
 })
