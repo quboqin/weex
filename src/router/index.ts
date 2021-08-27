@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/sign',
@@ -39,49 +39,49 @@ const routes: Array<RouteRecordRaw> = [
     path: '/order-list',
     name: 'OrderList',
     component: OrderList,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/order-detail',
     name: 'OrderDetail',
     component: OrderDetail,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/cart',
     name: 'Cart',
     component: Cart,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/checkout',
     name: 'Checkout',
     component: Checkout,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/address-list',
     name: 'AddressList',
     component: AddressList,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/address-detail',
     name: 'AddressDetail',
     component: AddressDetail,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/credit-card-list',
     name: 'CreditCardList',
     component: CreditCardList,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
   {
     path: '/credit-card-detail',
     name: 'CreditCardDetail',
     component: CreditCardDetail,
-    meta: { requiresAuth: false },
+    meta: { requiresAuth: true },
   },
 ]
 
@@ -94,7 +94,7 @@ router.beforeEach(async (to, from, next) => {
   const user = await getUser()
   if (!user && to.matched.some(record => record.meta.requiresAuth)) {
     return next({
-      name: 'sign',
+      name: 'Sign',
     })
   }
   return next()
