@@ -69,6 +69,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/address-detail',
     name: 'AddressDetail',
     component: AddressDetail,
+    props: true,
     meta: { requiresAuth: true },
   },
   {

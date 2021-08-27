@@ -9,11 +9,13 @@
           text-3xl text-center
           leading-none
         "
-        v-if="item.isDefault"
+        v-if="item.isDefault === '1'"
       ></p>
       <div v-else></div>
       <div class="text-left pl-2">
-        <div class="text-base font-semibold">{{ item.name }}</div>
+        <div class="text-base font-semibold">
+          {{ `${item.firstName} ${item.lastName}` }}
+        </div>
         <div class="text-xs text-gray-400">
           {{ item.address }}
         </div>
@@ -28,6 +30,11 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'AddressCell',
-  props: ['item'],
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
 })
 </script>

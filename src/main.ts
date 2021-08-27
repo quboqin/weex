@@ -5,7 +5,16 @@ import router from './router'
 import './index.css'
 
 import 'vant/lib/index.css'
-import { Search, Tab, Tabs, Field, CellGroup, Button, Image } from 'vant'
+import {
+  Search,
+  Tab,
+  Tabs,
+  Field,
+  CellGroup,
+  Button,
+  Image,
+  Checkbox,
+} from 'vant'
 
 const app = createApp(App)
 
@@ -19,5 +28,6 @@ app
   .use(CellGroup)
   .use(Button)
   .use(Image)
+  .use(Checkbox)
 
 app.mount('#app')
