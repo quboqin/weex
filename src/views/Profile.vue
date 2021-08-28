@@ -32,7 +32,10 @@
       </div>
       <p class="mdi mdi-chevron-right text-3xl text-center leading-none"></p>
     </div>
-    <div class="mx-4 my-3 text-gray-600 bg-white rounded-md">
+    <div
+      class="mx-4 my-3 text-gray-600 bg-white rounded-md"
+      @click="onOrderList"
+    >
       <div class="pl-2 pt-2 text-left">我的订单</div>
       <hr class="bg-gray-800 my-2" />
       <div class="flex justify-between py-2 px-4">
@@ -108,6 +111,10 @@ export default defineComponent({
       orderImages: [clock, box, trunk],
     })
 
+    function onOrderList() {
+      router.push('order-list')
+    }
+
     function onAddressList() {
       router.push('address-list')
     }
@@ -118,6 +125,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      onOrderList,
       onAddressList,
       onCreditCardList,
     }

@@ -46,7 +46,7 @@ import { defineComponent, reactive, watch, toRefs } from 'vue'
 
 import Header from '@/components/Header.vue'
 import GoodCell from '@/components/GoodCell.vue'
-import TabBar from '@/components/TabBar.vue'
+import TabBar from '@/components/Tabbar.vue'
 
 import category from '@/mock/category.json'
 import goods from '@/mock/goods.json'
