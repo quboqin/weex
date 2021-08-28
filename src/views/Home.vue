@@ -15,7 +15,7 @@
       </template>
 
       <template #right>
-        <p class="mdi mdi-cart"></p>
+        <p class="mdi mdi-cart" @click="onCart"></p>
       </template>
     </Header>
     <div class="mt-14">
@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, watch, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 import Header from '@/components/Header.vue'
 import GoodCell from '@/components/GoodCell.vue'
@@ -59,12 +60,18 @@ export default defineComponent({
     TabBar,
   },
   setup() {
+    const router = useRouter()
+
     const state = reactive({
       category: category,
       goods: goods,
       searchValue: '',
       active: 0,
     })
+
+    function onCart() {
+      router.push('cart')
+    }
 
     watch(
       () => state.searchValue,
@@ -75,6 +82,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      onCart,
     }
   },
 })

@@ -1,0 +1,40 @@
+<template>
+  <div class="flex justify-between items-center px-2">
+    <div class="flex justify-start items-center">
+      <img
+        :src="item.img"
+        alt=""
+        class="w-12 h-12 rounded-md"
+        style="object-fit: cover"
+      />
+      <div class="pl-2 text-left">
+        <div class="py-1">{{ item.name }}</div>
+        <div class="text-sm font-semibold py-1">${{ item.price }}</div>
+      </div>
+    </div>
+    <div>
+      <p
+        class="mdi mdi-delete-outline text-2xl text-right leading-none my-1"
+      ></p>
+      <p class="rounded bg-gray-200 p-2 py-1 my-1 text-right leading-none">
+        {{ item.amount }}
+      </p>
+    </div>
+  </div>
+  <hr class="bg-gray-800 my-2 ml-10" />
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'CartItemCell',
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup() {},
+})
+</script>

@@ -35,6 +35,7 @@ export default defineComponent({
     const state = reactive({
       creditCards,
     })
+
     function onEditCreditCard(index: number) {
       router.push({
         name: 'CreditCardDetail',
