@@ -3,10 +3,11 @@
   <div class="mt-14">
     <div class="text-left mx-4">我的收货地址</div>
     <AddressCell
-      v-for="(item, index) in addresses"
+      v-for="(address, index) in addresses"
       :key="index"
-      :item="item"
+      :address="address"
       @click="onEditAddress(index)"
+      class="my-2 mx-4"
     ></AddressCell>
     <div class="text-left mx-4 text-blue-400" @click="onAddAddress">
       添加新的地址

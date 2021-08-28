@@ -3,10 +3,11 @@
   <div class="mt-14">
     <div class="text-left mx-4">我的信用卡</div>
     <CreditCardCell
-      v-for="(item, index) in creditCards"
+      v-for="(card, index) in creditCards"
       :key="index"
-      :item="item"
+      :card="card"
       @click="onEditCreditCard(index)"
+      class="my-2 mx-4"
     ></CreditCardCell>
     <div class="text-left mx-4 text-blue-400" @click="onAddCreditCard">
       添加新的信用卡

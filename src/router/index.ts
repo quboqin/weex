@@ -6,7 +6,6 @@ import Home from '#/Home.vue'
 import Profile from '#/Profile.vue'
 import Sign from '#/Sign.vue'
 import OrderList from '#/OrderList.vue'
-import OrderDetail from '#/OrderDetail.vue'
 import Cart from '#/Cart.vue'
 import Checkout from '#/Checkout.vue'
 import AddressList from '#/AddressList.vue'
@@ -39,12 +38,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/order-list',
     name: 'OrderList',
     component: OrderList,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/order-detail',
-    name: 'OrderDetail',
-    component: OrderDetail,
     meta: { requiresAuth: true },
   },
   {

@@ -1,6 +1,6 @@
 <template>
   <div class="p-2">
-    <div class="rounded-md bg-white pb-1">
+    <div class="rounded-md bg-white">
       <div class="relative">
         <img
           class="h-48 mx-auto rounded-t-md"
@@ -12,7 +12,7 @@
             absolute
             top-0
             mt-2
-            ml-3
+            ml-2
             py-1
             px-2
             rounded-md
@@ -20,7 +20,7 @@
             bg-red-600
           "
         >
-          10% off
+          {{ Math.round(item.discount * 100).toFixed(0) }}% off
         </div>
       </div>
       <div class="text-sm text-left truncate px-2 pt-1">
@@ -35,14 +35,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'GoodCell',
-  props: ['item'],
-  setup() {
+  props: {
+    item: {
+      type: Object as PropType<Good>,
+      required: true,
+    },
+  },
+  setup(props) {
     function onAdd() {
-      console.log('add this item into cart')
+      console.log(`add this ${props.item.name} into cart`)
     }
 
     return {

@@ -8,7 +8,7 @@
       <van-field v-model="email" type="text" label="Email" />
       <van-field v-model="address" type="text" label="Address" />
     </van-cell-group>
-    <div class="flex justify-center items-center pt-3">
+    <div class="flex justify-center items-center pt-4">
       <van-checkbox v-model="isDefault" shape="square"
         >设置为默认地址</van-checkbox
       >
@@ -24,14 +24,6 @@ import { defineComponent, reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
-
-interface UserInfo {
-  firstName: string
-  lastName: string
-  tel: string
-  email: string
-  isDefault: string
-}
 
 export default defineComponent({
   name: 'AddressDetail',

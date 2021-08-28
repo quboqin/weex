@@ -4,9 +4,10 @@
     <van-tabs v-model:active="active" background="#fee2e2">
       <van-tab v-for="(item, index) in orderStatus" :title="item" :key="index">
         <OrderCell
-          v-for="(item, index) in orderList"
-          :item="item"
+          v-for="(order, index) in orderList"
+          :order="order"
           :key="index"
+          class="my-2 mx-4"
         ></OrderCell>
       </van-tab>
     </van-tabs>

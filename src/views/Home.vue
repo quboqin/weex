@@ -1,44 +1,43 @@
 <template>
-  <div class="h-full">
-    <Header>
-      <template #left>
-        <p class="mdi mdi-view-grid-outline"></p>
-      </template>
+  <Header>
+    <template #left>
+      <p class="mdi mdi-view-grid-outline"></p>
+    </template>
 
-      <template #default>
-        <van-search
-          v-model="searchValue"
-          placeholder="请输入要搜索的商品"
-          background="#4fc08d00"
-          shape="round"
-        />
-      </template>
+    <template #default>
+      <van-search
+        v-model="searchValue"
+        placeholder="请输入要搜索的商品"
+        background="#4fc08d00"
+        shape="round"
+        clearable
+      />
+    </template>
 
-      <template #right>
-        <p class="mdi mdi-cart" @click="onCart"></p>
-      </template>
-    </Header>
-    <div class="mt-14">
-      <van-tabs v-model:active="active" background="#fee2e2">
-        <van-tab
-          v-for="(item, index) in category"
-          :title="item.name"
-          :key="index"
-        >
-          <div class="flex flex-wrap justify-start">
-            <GoodCell
-              v-for="item in goods"
-              :key="item.id"
-              :item="item"
-              class="w-1/2"
-            >
-            </GoodCell>
-          </div>
-        </van-tab>
-      </van-tabs>
-    </div>
-    <tab-bar></tab-bar>
+    <template #right>
+      <p class="mdi mdi-cart" @click="onCart"></p>
+    </template>
+  </Header>
+  <div class="mt-14">
+    <van-tabs v-model:active="active" background="#fee2e2">
+      <van-tab
+        v-for="(item, index) in category"
+        :title="item.name"
+        :key="index"
+      >
+        <div class="flex flex-wrap justify-start">
+          <GoodCell
+            v-for="item in goods"
+            :key="item.id"
+            :item="item"
+            class="w-1/2"
+          >
+          </GoodCell>
+        </div>
+      </van-tab>
+    </van-tabs>
   </div>
+  <TabBar></TabBar>
 </template>
 
 <script lang="ts">
@@ -63,8 +62,8 @@ export default defineComponent({
     const router = useRouter()
 
     const state = reactive({
-      category: category,
-      goods: goods,
+      category,
+      goods,
       searchValue: '',
       active: 0,
     })

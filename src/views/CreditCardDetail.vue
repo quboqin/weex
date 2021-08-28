@@ -8,7 +8,7 @@
       <van-field v-model="cvc" type="number" label="CVC" />
       <van-field v-model="postCode" type="number" label="Post Code" />
     </van-cell-group>
-    <div class="flex justify-center items-center pt-3">
+    <div class="flex justify-center items-center pt-4">
       <van-checkbox v-model="isDefault" shape="square"
         >设置为默认银行卡</van-checkbox
       >

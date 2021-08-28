@@ -6,7 +6,12 @@
       v-for="tab in tabs"
       :key="tab.to"
       :to="tab.to"
-      class="py-1 focus:text-blue-500 text-gray-400 text-center leading-none"
+      class="
+        focus:text-blue-500
+        text-gray-400 text-center text-sm
+        leading-none
+        py-1
+      "
     >
       <p :class="tab.icon" class="text-3xl"></p>
       <span>{{ tab.title }}</span>
@@ -18,7 +23,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'tab-bar',
+  name: 'tabbar',
   setup() {
     const tabs = [
       { icon: 'mdi mdi-home', to: 'home', title: '首页' },

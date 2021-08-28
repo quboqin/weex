@@ -10,6 +10,7 @@
       justify-between
       items-center
       p-2
+      bg-opacity-95 bg-red-100
     "
   >
     <div class="text-2xl text-center leading-none">

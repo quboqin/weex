@@ -1,7 +1,7 @@
 <template>
   <Header>
     <template #left>
-      <p class="mdi mdi-chevron-left text-2xl" @click="onBack"></p>
+      <p class="mdi mdi-chevron-left" @click="onBack"></p>
     </template>
 
     <template #default>

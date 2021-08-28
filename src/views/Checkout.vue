@@ -1,6 +1,6 @@
 <template>
   <Header title="结账"></Header>
-  <div class="mt-14 mx-2">
+  <div class="mt-14 mx-4">
     <div class="flex justify-between items-center m-4 mx-12">
       <div class="bg-green-500 text-white rounded-full p-2 px-3">
         <p class="text-xs">7/10</p>
@@ -75,9 +75,9 @@
         mx-2
       "
     >
-      <div class="rounded-md bg-green-400 p-2 px-8">$1</div>
-      <div class="rounded-md bg-green-400 p-2 px-8">$2</div>
-      <div class="rounded-md bg-green-400 p-2 px-8">$3</div>
+      <div class="rounded-md bg-green-400 p-1 px-8">$1</div>
+      <div class="rounded-md bg-green-400 p-1 px-8">$2</div>
+      <div class="rounded-md bg-green-400 p-1 px-8">$3</div>
     </div>
     <div class="text-left text-sm mt-2">订单总结</div>
     <div class="my-1 text-sm text-gray-500 bg-white rounded-md p-2">

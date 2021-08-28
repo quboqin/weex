@@ -8,13 +8,21 @@
         style="object-fit: cover"
       />
       <div class="pl-2 text-left">
-        <div class="py-1">{{ item.name }}</div>
-        <div class="text-sm font-semibold py-1">${{ item.price }}</div>
+        <div class="py-1 text-sm">{{ item.name }}</div>
+        <div class="text-sm font-semibold py-1 text-red-500">
+          ${{ item.price }}
+        </div>
       </div>
     </div>
     <div>
       <p
-        class="mdi mdi-delete-outline text-2xl text-right leading-none my-1"
+        class="
+          mdi mdi-delete-outline
+          text-2xl text-right
+          leading-none
+          my-1
+          text-gray-500
+        "
       ></p>
       <p class="rounded bg-gray-200 p-2 py-1 my-1 text-right leading-none">
         {{ item.amount }}
@@ -25,13 +33,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'CartItemCell',
   props: {
     item: {
-      type: Object,
+      type: Object as PropType<Item>,
       required: true,
     },
   },
