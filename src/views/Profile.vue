@@ -90,7 +90,7 @@ import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Header from '@/components/Header.vue'
-import TabBar from '@/components/TabBar.vue'
+import TabBar from '@/components/Tabbar.vue'
 import avatarUrl from '@/assets/avatar.jpg'
 import clock from '@/assets/icons8-clock-64.png'
 import box from '@/assets/icons8-box-64.png'
