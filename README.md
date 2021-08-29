@@ -25,3 +25,23 @@ Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
 3. Open `src/main.ts` in VSCode
 4. Open the VSCode command palette
 5. Search and run "Select TypeScript version" -> "Use workspace version"
+
+# 知识点
+
+## Eslint and Prettier
+
+### 不需要安装 typescripe parser and eslint plugin
+
+### confug and plugin 的区别
+
+## Tailwind
+
+### 绝对定位和相对定位
+
+## Vue 3
+
+### toRefs
+
+## Vue Router
+
+### 参数传入
