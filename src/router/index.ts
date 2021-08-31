@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
-import { getUser } from '@/utils/auth'
+import { getUser } from '@/utils/aws-auth'
 
 import Home from '#/Home.vue'
 import Profile from '#/Profile.vue'

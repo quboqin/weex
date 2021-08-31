@@ -1,0 +1,38 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-vue3typescript-dev-165923-authRole",
+      "UnauthRoleArn": "arn:aws:iam::403593870368:role/amplify-vue3typescript-dev-165923-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::403593870368:role/amplify-vue3typescript-dev-165923-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-vue3typescript-dev-165923-deployment",
+      "UnauthRoleName": "amplify-vue3typescript-dev-165923-unauthRole",
+      "StackName": "amplify-vue3typescript-dev-165923",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:403593870368:stack/amplify-vue3typescript-dev-165923/076abb40-acb7-11eb-ab9c-06766cd58472",
+      "AmplifyAppId": "d3e3nuj8f2v05x"
+    },
+    "categories": {
+      "auth": {
+        "vue3typescript360b0231": {}
+      },
+      "function": {
+        "vue3typescript360b0231DefineAuthChallenge": {
+          "deploymentBucketName": "amplify-vue3typescript-dev-165923-deployment",
+          "s3Key": "amplify-builds/vue3typescript360b0231DefineAuthChallenge-4d795851444773446c77-build.zip"
+        },
+        "vue3typescript360b0231CreateAuthChallenge": {
+          "deploymentBucketName": "amplify-vue3typescript-dev-165923-deployment",
+          "s3Key": "amplify-builds/vue3typescript360b0231CreateAuthChallenge-334b3574445037314f38-build.zip"
+        },
+        "vue3typescript360b0231VerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-vue3typescript-dev-165923-deployment",
+          "s3Key": "amplify-builds/vue3typescript360b0231VerifyAuthChallengeResponse-2b697777766464584268-build.zip"
+        },
+        "vue3typescript360b0231PreSignup": {
+          "deploymentBucketName": "amplify-vue3typescript-dev-165923-deployment",
+          "s3Key": "amplify-builds/vue3typescript360b0231PreSignup-32635877676c44313173-build.zip"
+        }
+      }
+    }
+  }
+}

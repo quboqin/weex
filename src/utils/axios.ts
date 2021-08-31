@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { getUser } from '@/utils/auth'
+import { getCurrentSession, getUser } from '@/utils/aws-auth'
 
 const port = import.meta.env.VITE_APP_PORT
 const url = import.meta.env.VITE_APP_URL ?? import.meta.env.VITE_APP_BASE_URL
@@ -14,10 +14,18 @@ axios.defaults.headers.post['Content-Type'] =
 
 axios.interceptors.request.use(
   async (config) => {
-    const user = await getUser()
-    config.headers.userId = user?.firstName
-    
+    const session = await getCurrentSession()
+    if (session) {
+      config.headers.Authorization = `Bearer ${session
+        .getIdToken()
+        .getJwtToken()}`
+      const user = await getUser()
+      config.headers.userId = user.username
+    }
     return config
+  },
+  (error) => {
+    return Promise.reject(error)
   },
 )
 

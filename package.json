@@ -8,6 +8,8 @@
     "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "aws-amplify": "^4.2.5",
+    "aws-amplify-vue": "^2.1.5",
     "axios": "^0.21.1",
     "vant": "^3.2.1",
     "vue": "^3.0.5",
