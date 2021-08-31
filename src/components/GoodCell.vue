@@ -41,7 +41,7 @@ export default defineComponent({
   name: 'GoodCell',
   props: {
     item: {
-      type: Object as PropType<Good>,
+      type: Object as PropType<Goods>,
       required: true,
     },
   },

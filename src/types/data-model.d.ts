@@ -1,5 +1,5 @@
-interface Good {
-  id: number
+interface Goods {
+  id: string
   name: string
   desc: string
   img: string
@@ -8,10 +8,8 @@ interface Good {
 }
 
 interface Item {
-  name: string
   amount: number
-  price: number
-  img: string
+  goodsId: string
 }
 
 declare enum OrderStatus {
@@ -21,14 +19,14 @@ declare enum OrderStatus {
 }
 
 interface Order {
+  id: string
   deliverDate: string
   items: Item[]
-  id: number
   status: OrderStatus
   totalPrice: number
 }
 
-interface Address {
+interface User {
   firstName: string
   lastName: string
   tel: string

@@ -38,7 +38,7 @@ export default defineComponent({
   name: 'AddressCell',
   props: {
     address: {
-      type: Object as PropType<Address>,
+      type: Object as PropType<User>,
       required: true,
     },
   },
