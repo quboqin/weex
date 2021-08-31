@@ -3,13 +3,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, reactive } from 'vue'
 
+import { userAuthProvide, UserInfo } from '@/store/user'
 import { checkHealth } from '@/apis/health'
 
 export default defineComponent({
   name: 'App',
   setup() {
+    const newUser: UserInfo = reactive({
+      user: {
+        phone: '',
+      },
+    })
+    userAuthProvide(newUser)
+
     const getUserName = async () => {
       checkHealth({})
     }
