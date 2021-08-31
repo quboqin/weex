@@ -3,10 +3,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
+
+import { checkHealth } from '@/apis/health'
 
 export default defineComponent({
   name: 'App',
+  setup() {
+    const getUserName = async () => {
+      checkHealth({})
+    }
+    onMounted(getUserName)
+  }
 })
 </script>
 
