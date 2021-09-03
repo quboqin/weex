@@ -27,6 +27,8 @@
                 >
               </template>
             </van-field>
+            <van-field v-model="firstName" type="text" label="First Name" />
+            <van-field v-model="lastName" type="text" label="Last Name" />
           </van-cell-group>
         </div>
       </van-tab>
@@ -46,6 +48,8 @@ import { createUser } from '@/apis/user'
 import { UserInfo, userAuthInject } from '@/store/user'
 import { signIn, sendCustomChallengeAnswer } from '@/utils/aws-auth'
 
+import { UserGender } from 'quboqin-lib-typescript/lib/user'
+
 import Header from '@/components/HeaderWithBack.vue'
 
 export default defineComponent({
@@ -60,26 +64,34 @@ export default defineComponent({
     const state = reactive({
       tel: '+13233013227',
       email: 'quboqin0710@gmail.com',
-      code: '1234',
+      code: '',
+      firstName: '',
+      lastName: '',
       active: 0,
     })
 
     const telRef = toRef(state, 'tel')
     const codeRef = toRef(state, 'code')
+    const firstNameRef = toRef(state, 'firstName')
+    const lastNameRef = toRef(state, 'lastName')
 
     async function onSignIn(): Promise<void> {
       try {
         const cognitoUser = await signIn(
           telRef.value,
           true,
-          'Qubo',
-          'Qin',
+          firstNameRef.value,
+          lastNameRef.value,
         )
 
         const userInfo: UserInfo = {
           cognitoUser: cognitoUser,
           user: {
+            id: 0,
             phone: telRef.value,
+            firstName: firstNameRef.value,
+            lastName: lastNameRef.value,
+            gender: UserGender.MALE
           },
         }
 
@@ -102,11 +114,18 @@ export default defineComponent({
           await sendCustomChallengeAnswer(cognitoUser, codeRef.value)
           await createUser({
             phone: telRef.value,
+            firstName: firstNameRef.value,
+            lastName: lastNameRef.value,
+            gender: UserGender.MALE
           })
           setUserInfo({
             cognitoUser: userInfo.cognitoUser,
             user: {
+              id: 0,
               phone: telRef.value,
+              firstName: firstNameRef.value,
+              lastName: lastNameRef.value,
+              gender: UserGender.MALE
             },
           })
           router.push({
@@ -117,8 +136,8 @@ export default defineComponent({
             const _cognitoUser = await signIn(
               cognitoUser.getUsername(),
               true,
-              'Qubo',
-              'Qin',
+              firstNameRef.value,
+              lastNameRef.value,
             )
             setCognitoUser(_cognitoUser)
           }

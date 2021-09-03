@@ -102,6 +102,9 @@
         "
       ></p>
     </div>
+    <div class="mx-4 mt-4">
+      <van-button round type="success" size="large" @click="onLogout">退出</van-button>
+    </div>
   </div>
   <TabBar></TabBar>
 </template>
@@ -109,6 +112,8 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+
+import { signOut } from '@/utils/aws-auth'
 
 import Header from '@/components/Header.vue'
 import TabBar from '@/components/Tabbar.vue'
@@ -144,11 +149,19 @@ export default defineComponent({
       router.push('credit-card-list')
     }
 
+    async function onLogout() {
+      await signOut()
+      router.push({
+        path: '/',
+      })
+    }
+
     return {
       ...toRefs(state),
       onOrderList,
       onAddressList,
       onCreditCardList,
+      onLogout,
     }
   },
 })
