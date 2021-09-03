@@ -2,10 +2,12 @@ import { result } from '@/utils/axios'
 
 import { User } from 'quboqin-lib-typescript/lib/user'
 
-export function getUserByPhone<T,U>(
-  params: T,
-): Promise<U | void> {
+export function getUserByPhone<T, U>(params: T): Promise<U | void> {
   return result('get', '/users', params)
+}
+
+export function getAllAddresses<T, U>(params: T): Promise<U | void> {
+  return result('get', '/addresses', params)
 }
 
 export function createUser<T, U>(params: T): Promise<U | void> {
@@ -15,4 +17,3 @@ export function createUser<T, U>(params: T): Promise<U | void> {
 export function createAddress<T, U>(params: T): Promise<U | void> {
   return result('post', '/addresses', params)
 }
-

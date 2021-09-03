@@ -19,14 +19,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, Ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref, Ref, onMounted } from 'vue'
 import { useRouter, RouteParamsRaw } from 'vue-router'
 
 import { userAuthInject } from '@/store/user'
+import { getAllAddresses } from '@/apis/user'
+import { Address } from 'quboqin-lib-typescript/lib/address'
 
 import Header from '@/components/HeaderWithBack.vue'
 import AddressCell from '@/components/AddressCell.vue'
-
 
 export default defineComponent({
   name: 'AddressList',
@@ -39,17 +40,20 @@ export default defineComponent({
     const { userInfo } = userAuthInject()
 
     const user = userInfo.user
-    const addresses = user.addresses
+    let addresses = ref(user.addresses)
 
-    const address = (addresses && user.defaultAddress && user.defaultAddress > 0) ? addresses[user.defaultAddress] : undefined
-    
+    const address =
+      addresses.value && user.defaultAddress && user.defaultAddress > 0
+        ? addresses.value[user.defaultAddress]
+        : undefined
+
     function onEditAddress(index: number) {
       router.push({
         name: 'AddressDetail',
         params: {
           zipCode: address?.zipCode,
           city: address?.street,
-          street: address?.street
+          street: address?.street,
         },
       })
     }
@@ -60,6 +64,13 @@ export default defineComponent({
         params: undefined,
       })
     }
+
+    const getAddresses = async () => {
+      addresses.value = (await getAllAddresses({
+        phone: user.phone,
+      })) as Address[]
+    }
+    onMounted(getAddresses)
 
     return {
       user,
