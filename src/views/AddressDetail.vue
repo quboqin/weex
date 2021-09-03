@@ -21,6 +21,8 @@
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 
+import { userAuthInject } from '@/store/user'
+
 import { createAddress } from '@/apis/user'
 
 import Header from '@/components/HeaderWithBack.vue'
@@ -32,8 +34,10 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
+    const { userInfo } = userAuthInject()
 
     const state = reactive({
+      phone: userInfo.user.phone,
       street: route.params.street,
       city: route.params.city,
       zipCode: route.params.zipCode,
