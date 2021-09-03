@@ -76,9 +76,6 @@ export default defineComponent({
     const lastNameRef = toRef(state, 'lastName')
 
     const user = new User()
-    user.phone = phoneRef.value
-    user.firstName = firstNameRef.value
-    user.lastName = lastNameRef.value
 
     async function onSignIn(): Promise<void> {
       try {
@@ -88,6 +85,10 @@ export default defineComponent({
           firstNameRef.value,
           lastNameRef.value,
         )
+
+        user.phone = phoneRef.value
+        user.firstName = firstNameRef.value
+        user.lastName = lastNameRef.value
 
         const userInfo: UserInfo = {
           cognitoUser: cognitoUser,
