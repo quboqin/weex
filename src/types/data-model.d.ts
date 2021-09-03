@@ -1,12 +1,3 @@
-interface Goods {
-  id: string
-  name: string
-  desc: string
-  img: string
-  price: number
-  discount: number
-}
-
 interface Item {
   amount: number
   goodsId: string

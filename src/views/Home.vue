@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, toRefs } from 'vue'
+import { defineComponent, Ref, ref, reactive, watch, toRefs, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Header from '@/components/Header.vue'
@@ -49,7 +49,9 @@ import GoodCell from '@/components/GoodCell.vue'
 import TabBar from '@/components/Tabbar.vue'
 
 import category from '@/mock/category.json'
-import goods from '@/mock/goods.json'
+
+import { Good } from 'quboqin-lib-typescript/lib/goods'
+import { getAllGoods } from '@/apis/goods'
 
 export default defineComponent({
   name: 'Home',
@@ -61,9 +63,10 @@ export default defineComponent({
   setup() {
     const router = useRouter()
 
+    const goods: Ref<Good[]> = ref([])
+
     const state = reactive({
       category,
-      goods,
       searchValue: '',
       active: 0,
     })
@@ -79,8 +82,14 @@ export default defineComponent({
       },
     )
 
+    const getGoods = async () => {
+      goods.value = await getAllGoods({}) as Good[]
+    }
+    onMounted(getGoods)
+
     return {
       ...toRefs(state),
+      goods,
       onCart,
     }
   },

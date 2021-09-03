@@ -4,7 +4,7 @@
       <div class="relative">
         <img
           class="h-48 mx-auto rounded-t-md"
-          :src="item.img"
+          :src="item.imgUrl"
           style="object-fit: cover"
         />
         <div
@@ -20,7 +20,7 @@
             bg-red-600
           "
         >
-          {{ Math.round(item.discount * 100).toFixed(0) }}% off
+          {{ Math.round((item.discount ?? 0) * 100).toFixed(0) }}% off
         </div>
       </div>
       <div class="text-sm text-left truncate px-2 pt-1">
@@ -37,11 +37,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 
+import { Good } from 'quboqin-lib-typescript/lib/goods'
+
 export default defineComponent({
   name: 'GoodCell',
   props: {
     item: {
-      type: Object as PropType<Goods>,
+      type: Object as PropType<Good>,
       required: true,
     },
   },
