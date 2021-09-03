@@ -1,7 +1,7 @@
 import { result, AxioFunc } from '@/utils/axios'
 
-export const getAllGoods: AxioFunc = (
-  params: Record<string, unknown> = {},
-) => {
+export function getAllGoods<T, U>(
+  params: T,
+): Promise<U | void> {
   return result('get', '/goods', params)
 }

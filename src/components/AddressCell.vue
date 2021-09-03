@@ -8,15 +8,15 @@
           leading-none
           text-gray-500
         "
-        v-if="address.isDefault === '1'"
+        v-if="isDefault"
       ></p>
       <div v-else></div>
       <div class="text-left pl-2">
         <div class="text-base font-semibold">
-          {{ `${address.firstName} ${address.lastName}` }}
+          {{ `${firstName} ${lastName}` }}
         </div>
         <div class="text-xs text-gray-400">
-          {{ address.address }}
+          {{ address.street }}
         </div>
       </div>
     </div>
@@ -32,15 +32,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed, toRefs } from 'vue'
+
+import { Address } from 'quboqin-lib-typescript/lib/address'
 
 export default defineComponent({
   name: 'AddressCell',
   props: {
-    address: {
-      type: Object as PropType<User>,
+    firstName: {
+      type: String,
       required: true,
     },
-  },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: Object as PropType<Address>,
+      required: true,
+    },
+    isDefault: {
+      type: Boolean,
+      required: true
+    }
+  }
 })
 </script>

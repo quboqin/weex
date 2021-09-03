@@ -17,15 +17,6 @@ interface Order {
   totalPrice: number
 }
 
-interface User {
-  firstName: string
-  lastName: string
-  tel: string
-  email: string
-  address: string
-  isDefault: string
-}
-
 interface CreditCard {
   id: string
   code: string

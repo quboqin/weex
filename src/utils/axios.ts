@@ -30,7 +30,7 @@ axios.interceptors.request.use(
 )
 
 
-function get(path: string, params: Record<string, unknown>) {
+function get<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
     axios
       .get(path, {
@@ -45,7 +45,7 @@ function get(path: string, params: Record<string, unknown>) {
   })
 }
 
-function post(path: string, params: Record<string, unknown>) {
+function post<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
     axios
       .post(path, params)
@@ -58,7 +58,7 @@ function post(path: string, params: Record<string, unknown>) {
   })
 }
 
-function put(path: string, params: Record<string, unknown>) {
+function put<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
     axios
       .put(path, params)
@@ -71,7 +71,7 @@ function put(path: string, params: Record<string, unknown>) {
   })
 }
 
-function del(path: string, params: Record<string, unknown>) {
+function del<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
     axios
       .delete(path, {
@@ -86,11 +86,11 @@ function del(path: string, params: Record<string, unknown>) {
   })
 }
 
-export function request(
+export function request<T, U>(
   method: string,
   path: string,
-  params: Record<string, unknown>,
-): Promise<unknown> | Promise<void> {
+  params: T,
+): Promise<U | void> {
   if (method === 'get') {
     return get(path, params)
   } else if (method === 'del') {
@@ -104,14 +104,14 @@ export function request(
   }
 }
 
-export type AxioFunc = (params: Record<string, unknown>) => Promise<unknown>
+export type AxioFunc<T, U> = (params: T) => Promise<U | void>
 
-export function result(
+export function result<T, U>(
   method: string,
   path: string,
-  params: Record<string, unknown>,
-  mockData?: boolean,
-): Promise<unknown> {
+  params: T,
+  mockData?: U,
+): Promise<U | void> {
   return new Promise((resolve) => {
     if (mockData) return resolve(mockData)
     return resolve(request(method, path, params))

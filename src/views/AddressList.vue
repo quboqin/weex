@@ -5,7 +5,10 @@
     <AddressCell
       v-for="(address, index) in addresses"
       :key="index"
+      :firstName="user.firstName"
+      :lastName="user.lastName"
       :address="address"
+      :isDefault="address.id === user.defaultAddress"
       @click="onEditAddress(index)"
       class="my-2 mx-4"
     ></AddressCell>
@@ -16,13 +19,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, reactive, toRefs, ref, Ref } from 'vue'
+import { useRouter, RouteParamsRaw } from 'vue-router'
+
+import { userAuthInject } from '@/store/user'
 
 import Header from '@/components/HeaderWithBack.vue'
 import AddressCell from '@/components/AddressCell.vue'
 
-import addresses from '@/mock/addesses.json'
 
 export default defineComponent({
   name: 'AddressList',
@@ -32,15 +36,21 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const { userInfo } = userAuthInject()
 
-    const state = reactive({
-      addresses,
-    })
+    const user = userInfo.user
+    const addresses = user.addresses
 
+    const address = (addresses && user.defaultAddress && user.defaultAddress > 0) ? addresses[user.defaultAddress] : undefined
+    
     function onEditAddress(index: number) {
       router.push({
         name: 'AddressDetail',
-        params: addresses[index],
+        params: {
+          zipCode: address?.zipCode,
+          city: address?.street,
+          street: address?.street
+        },
       })
     }
 
@@ -52,7 +62,8 @@ export default defineComponent({
     }
 
     return {
-      ...toRefs(state),
+      user,
+      addresses,
       onEditAddress,
       onAddAddress,
     }
