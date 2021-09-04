@@ -8,11 +8,13 @@
           leading-none
           text-gray-500
         "
-        v-if="card.isDefault === '1'"
+        v-if="isDefault"
       ></p>
       <div v-else></div>
       <div class="text-base font-semibold pl-2 text-gray-400">
-        {{ card.code }}
+        {{
+          `${card.brand} ${card.country} ${card.expirationMonth} ${card.expirationYear}`
+        }}
       </div>
     </div>
     <p
@@ -29,11 +31,17 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 
+import { Card } from 'quboqin-lib-typescript/lib/card'
+
 export default defineComponent({
   name: 'CreditCardCell',
   props: {
     card: {
-      type: Object as PropType<CreditCard>,
+      type: Object as PropType<Card>,
+      required: true,
+    },
+    isDefault: {
+      type: Boolean,
       required: true,
     },
   },

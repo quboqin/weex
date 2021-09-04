@@ -16,13 +16,3 @@ interface Order {
   status: OrderStatus
   totalPrice: number
 }
-
-interface CreditCard {
-  id: string
-  code: string
-  year: number
-  month: number
-  cvc: number
-  postCode: number
-  isDefault: string
-}

@@ -16,10 +16,8 @@
         <van-button round type="success" size="large">保存</van-button>
       </div>
 
-      <div class="flex-auto px-4" v-if="id">
-        <van-button round type="success" size="large" @click="onDelete"
-          >删除</van-button
-        >
+      <div @click="onDelete" class="flex-auto px-4" v-if="id">
+        <van-button round type="success" size="large">删除</van-button>
       </div>
     </div>
   </div>

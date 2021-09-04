@@ -3,9 +3,10 @@
   <div class="mt-14">
     <div class="text-left mx-4">我的信用卡</div>
     <CreditCardCell
-      v-for="(card, index) in creditCards"
+      v-for="(card, index) in cards"
       :key="index"
       :card="card"
+      :isDefault="card.last4 === defaultCard"
       @click="onEditCreditCard(index)"
       class="my-2 mx-4"
     ></CreditCardCell>
@@ -16,13 +17,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
 import CreditCardCell from '@/components/CreditCardCell.vue'
 
-import creditCards from '@/mock/credit-cards.json'
+import { userAuthInject } from '@/store/user'
+import { getAllCards } from '@/apis/card'
+import { getUserByPhone } from '@/apis/user'
+import { Card } from 'quboqin-lib-typescript/lib/card'
+import { User } from 'quboqin-lib-typescript/lib/user'
 
 export default defineComponent({
   name: 'CreditCardList',
@@ -32,24 +37,48 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const { userInfo, setUserInfo } = userAuthInject()
 
     const state = reactive({
-      creditCards,
+      phone: userInfo.user.phone,
+      defaultCard: userInfo.user.defaultCard,
+      cards: userInfo.user.cards ? userInfo.user.cards : [],
     })
 
     function onEditCreditCard(index: number) {
+      const card = state.cards[index]
       router.push({
         name: 'CreditCardDetail',
-        params: creditCards[index],
+        params: {
+          phone: state.phone,
+        },
       })
     }
 
     function onAddCreditCard() {
       router.push({
         name: 'CreditCardDetail',
-        params: undefined,
+        params: {
+          phone: state.phone,
+        },
       })
     }
+
+    const init = async () => {
+      state.cards = (await getAllCards({
+        phone: state.phone,
+      })) as Card[]
+
+      const user = (await getUserByPhone({
+        phone: state.phone,
+      })) as User
+
+      setUserInfo({
+        cognitoUser: userInfo.cognitoUser,
+        user: user,
+      })
+    }
+    onMounted(init)
 
     return {
       ...toRefs(state),
