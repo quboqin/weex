@@ -5,10 +5,10 @@
     <AddressCell
       v-for="(address, index) in addresses"
       :key="index"
-      :firstName="user.firstName"
-      :lastName="user.lastName"
+      :firstName="firstName"
+      :lastName="lastName"
       :address="address"
-      :isDefault="address.id === user.defaultAddress"
+      :isDefault="address.id === defaultAddress"
       @click="onEditAddress(index)"
       class="my-2 mx-4"
     ></AddressCell>
@@ -19,16 +19,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, Ref, onMounted } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
+import Header from '@/components/HeaderWithBack.vue'
+import AddressCell from '@/components/AddressCell.vue'
 
 import { userAuthInject } from '@/store/user'
 import { getUserByPhone, getAllAddresses } from '@/apis/user'
 import { Address } from 'quboqin-lib-typescript/lib/address'
 import { User } from 'quboqin-lib-typescript/lib/user'
-
-import Header from '@/components/HeaderWithBack.vue'
-import AddressCell from '@/components/AddressCell.vue'
 
 export default defineComponent({
   name: 'AddressList',
@@ -38,19 +38,26 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { userInfo } = userAuthInject()
+    const { userInfo, setUserInfo } = userAuthInject()
 
-    const user = ref(userInfo.user)
-    const addresses = ref(user.value.addresses)
+    const state = reactive({
+      phone: userInfo.user.phone,
+      firstName: userInfo.user.firstName,
+      lastName: userInfo.user.lastName,
+      defaultAddress: userInfo.user.defaultAddress,
+      addresses: userInfo.user.addresses ? userInfo.user.addresses : [],
+    })
 
     function onEditAddress(index: number) {
-      const address = addresses.value ? addresses.value[index] : undefined
+      const address = state.addresses[index]
       router.push({
         name: 'AddressDetail',
         params: {
-          zipCode: address?.zipCode,
-          city: address?.city,
-          street: address?.street,
+          phone: state.phone,
+          zipCode: address.zipCode,
+          city: address.city,
+          street: address.street,
+          id: address.id,
         },
       })
     }
@@ -58,24 +65,30 @@ export default defineComponent({
     function onAddAddress() {
       router.push({
         name: 'AddressDetail',
-        params: undefined,
+        params: {
+          phone: state.phone,
+        },
       })
     }
 
-    const getAddresses = async () => {
-      addresses.value = (await getAllAddresses({
-        phone: user.value.phone,
+    const init = async () => {
+      state.addresses = (await getAllAddresses({
+        phone: state.phone,
       })) as Address[]
 
-      user.value = (await getUserByPhone({
-        phone: user.value.phone,
+      const user = (await getUserByPhone({
+        phone: state.phone,
       })) as User
+
+      setUserInfo({
+        cognitoUser: userInfo.cognitoUser,
+        user: user,
+      })
     }
-    onMounted(getAddresses)
+    onMounted(init)
 
     return {
-      user,
-      addresses,
+      ...toRefs(state),
       onEditAddress,
       onAddAddress,
     }

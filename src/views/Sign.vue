@@ -16,41 +16,38 @@
               :label="item"
             />
             <van-field v-else v-model="email" type="email" :label="item" />
+            <van-field v-model="firstName" type="text" label="First Name" />
+            <van-field v-model="lastName" type="text" label="Last Name" />
             <van-field v-model="code" type="digit" label="验证码">
               <template v-slot:button>
-                <van-button
-                  round
-                  type="danger"
-                  size="mini"
-                  @click="onSignIn"
+                <van-button round type="danger" size="mini" @click="onSignIn"
                   >获取验证码</van-button
                 >
               </template>
             </van-field>
-            <van-field v-model="firstName" type="text" label="First Name" />
-            <van-field v-model="lastName" type="text" label="Last Name" />
           </van-cell-group>
         </div>
       </van-tab>
     </van-tabs>
 
     <div class="mx-4 mt-4">
-      <van-button round type="success" size="large" @click="onSubmitOTP">立即登录</van-button>
+      <van-button round type="success" size="large" @click="onSubmitOTP"
+        >立即登录</van-button
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRef, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { createUser } from '@/apis/user'
-import { UserInfo, userAuthInject } from '@/store/user'
-import { signIn, sendCustomChallengeAnswer } from '@/utils/aws-auth'
-
-import { User, UserGender } from 'quboqin-lib-typescript/lib/user'
-
 import Header from '@/components/HeaderWithBack.vue'
+
+import { createUser } from '@/apis/user'
+import { userAuthInject } from '@/store/user'
+import { signIn, sendCustomChallengeAnswer } from '@/utils/aws-auth'
+import { User, UserGender } from 'quboqin-lib-typescript/lib/user'
 
 export default defineComponent({
   name: 'Sign',
@@ -62,40 +59,24 @@ export default defineComponent({
     const { userInfo, setCognitoUser, setUserInfo } = userAuthInject()
 
     const state = reactive({
-      phone: '+13233013227',
-      email: 'quboqin0710@gmail.com',
+      phone: userInfo.user.phone,
+      firstName: userInfo.user.firstName,
+      lastName: userInfo.user.lastName,
+      email: userInfo.user.email,
       code: '',
-      firstName: '',
-      lastName: '',
       active: 0,
     })
-
-    const phoneRef = toRef(state, 'phone')
-    const codeRef = toRef(state, 'code')
-    const firstNameRef = toRef(state, 'firstName')
-    const lastNameRef = toRef(state, 'lastName')
-
-    const user = new User()
 
     async function onSignIn(): Promise<void> {
       try {
         const cognitoUser = await signIn(
-          phoneRef.value,
+          state.phone,
           true,
-          firstNameRef.value,
-          lastNameRef.value,
+          state.firstName,
+          state.lastName,
         )
 
-        user.phone = phoneRef.value
-        user.firstName = firstNameRef.value
-        user.lastName = lastNameRef.value
-
-        const userInfo: UserInfo = {
-          cognitoUser: cognitoUser,
-          user: user,
-        }
-
-        setUserInfo(userInfo)
+        setCognitoUser(cognitoUser)
       } catch (error) {
         console.log(error.message)
       }
@@ -103,32 +84,40 @@ export default defineComponent({
     }
 
     function onReset(): void {
-      phoneRef.value = ''
+      state.phone = ''
       console.log(`onReset`)
     }
 
     async function onSubmitOTP(): Promise<void> {
-      const cognitoUser = userInfo.cognitoUser
+      let cognitoUser = userInfo.cognitoUser
       if (cognitoUser) {
         try {
-          await sendCustomChallengeAnswer(cognitoUser, codeRef.value)
+          await sendCustomChallengeAnswer(cognitoUser, state.code)
+
+          const user = new User()
+          user.phone = state.phone
+          user.firstName = state.firstName
+          user.lastName = state.lastName
           await createUser(user)
+
           setUserInfo({
-            cognitoUser: userInfo.cognitoUser,
+            cognitoUser: cognitoUser,
             user: user,
           })
           router.push({
-            path: '/',
+            path: '/profile',
           })
         } catch (error) {
           if (error.code === 'UserLambdaValidationException') {
-            const _cognitoUser = await signIn(
+            cognitoUser = await signIn(
               cognitoUser.getUsername(),
               true,
-              firstNameRef.value,
-              lastNameRef.value,
+              state.firstName,
+              state.lastName,
             )
-            setCognitoUser(_cognitoUser)
+            if (cognitoUser) {
+              setCognitoUser(cognitoUser)
+            }
           }
         }
       }

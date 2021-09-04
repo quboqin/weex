@@ -6,23 +6,23 @@
 import { defineComponent, onMounted, reactive } from 'vue'
 
 import { userAuthProvide, UserInfo } from '@/store/user'
+import { User } from 'quboqin-lib-typescript/lib/user'
 import { checkHealth } from '@/apis/health'
 
 export default defineComponent({
   name: 'App',
   setup() {
     const newUser: UserInfo = reactive({
-      user: {
-        phone: '',
-      },
+      user: new User(),
     })
+    newUser.user.phone = '+13233013227'
     userAuthProvide(newUser)
 
-    const getUserName = async () => {
+    const init = async () => {
       checkHealth({})
     }
-    onMounted(getUserName)
-  }
+    onMounted(init)
+  },
 })
 </script>
 

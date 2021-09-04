@@ -16,7 +16,7 @@ type UserInfoContext = {
 
 const UserAuthSymbol = Symbol()
 
-export const userAuthProvide: (newUser: UserInfo) => void = (newUser) => {
+export const userAuthProvide: (newUser: UserInfo) => void = newUser => {
   const userInfo = reactive<UserInfo>(newUser)
 
   const setCognitoUser = (cognitoUser: CognitoUser) =>

@@ -11,21 +11,27 @@
         >设置为默认地址</van-checkbox
       >
     </div>
-    <div class="mx-4 mt-4">
-      <van-button round type="success" size="large" @click=onSave>保存</van-button>
+    <div class="mx-4 mt-4 flex justify-between">
+      <div @click="onSave" class="flex-auto px-4">
+        <van-button round type="success" size="large">保存</van-button>
+      </div>
+
+      <div class="flex-auto px-4" v-if="id">
+        <van-button round type="success" size="large" @click="onDelete"
+          >删除</van-button
+        >
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
-import { useRoute } from 'vue-router'
-
-import { userAuthInject } from '@/store/user'
-
-import { createAddress } from '@/apis/user'
+import { useRoute, useRouter } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
+
+import { createAddress, deleteAddress } from '@/apis/user'
 
 export default defineComponent({
   name: 'AddressDetail',
@@ -34,23 +40,35 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    const { userInfo } = userAuthInject()
+    const router = useRouter()
 
     const state = reactive({
-      phone: userInfo.user.phone,
+      phone: route.params.phone,
       street: route.params.street,
       city: route.params.city,
       zipCode: route.params.zipCode,
+      id: route.params.id,
       isDefault: false,
     })
 
     async function onSave() {
       await createAddress(state)
+      router.push({
+        path: '/address-list',
+      })
+    }
+
+    async function onDelete() {
+      await deleteAddress(state)
+      router.push({
+        path: '/address-list',
+      })
     }
 
     return {
       ...toRefs(state),
-      onSave
+      onSave,
+      onDelete,
     }
   },
 })

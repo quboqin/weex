@@ -103,17 +103,17 @@
       ></p>
     </div>
     <div class="mx-4 mt-4">
-      <van-button round type="success" size="large" @click="onLogout">退出</van-button>
+      <van-button round type="success" size="large" @click="onLogout"
+        >退出</van-button
+      >
     </div>
   </div>
   <TabBar></TabBar>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
-import { signOut } from '@/utils/aws-auth'
 
 import Header from '@/components/Header.vue'
 import TabBar from '@/components/Tabbar.vue'
@@ -121,6 +121,11 @@ import avatarUrl from '@/assets/avatar.jpg'
 import clock from '@/assets/icons8-clock-64.png'
 import box from '@/assets/icons8-box-64.png'
 import trunk from '@/assets/icons8-boot-open-64.png'
+
+import { signOut } from '@/utils/aws-auth'
+import { userAuthInject } from '@/store/user'
+import { User } from 'quboqin-lib-typescript/lib/user'
+import { getUserByPhone } from '@/apis/user'
 
 export default defineComponent({
   name: 'Profile',
@@ -130,6 +135,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const { userInfo, setUserInfo } = userAuthInject()
 
     const state = reactive({
       avatarUrl,
@@ -151,10 +157,26 @@ export default defineComponent({
 
     async function onLogout() {
       await signOut()
+      setUserInfo({
+        user: new User(),
+        cognitoUser: undefined,
+      })
       router.push({
         path: '/',
       })
     }
+
+    const init = async () => {
+      const user = (await getUserByPhone({
+        phone: userInfo.user.phone,
+      })) as User
+
+      setUserInfo({
+        user: user,
+        cognitoUser: userInfo.cognitoUser,
+      })
+    }
+    onMounted(init)
 
     return {
       ...toRefs(state),

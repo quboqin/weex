@@ -17,3 +17,7 @@ export function createUser<T, U>(params: T): Promise<U | void> {
 export function createAddress<T, U>(params: T): Promise<U | void> {
   return result('post', '/addresses', params)
 }
+
+export function deleteAddress<T, U>(params: T): Promise<U | void> {
+  return result('del', '/addresses', params)
+}
