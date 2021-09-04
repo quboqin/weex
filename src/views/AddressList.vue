@@ -20,11 +20,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref, Ref, onMounted } from 'vue'
-import { useRouter, RouteParamsRaw } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 import { userAuthInject } from '@/store/user'
-import { getAllAddresses } from '@/apis/user'
+import { getUserByPhone, getAllAddresses } from '@/apis/user'
 import { Address } from 'quboqin-lib-typescript/lib/address'
+import { User } from 'quboqin-lib-typescript/lib/user'
 
 import Header from '@/components/HeaderWithBack.vue'
 import AddressCell from '@/components/AddressCell.vue'
@@ -39,20 +40,16 @@ export default defineComponent({
     const router = useRouter()
     const { userInfo } = userAuthInject()
 
-    const user = userInfo.user
-    let addresses = ref(user.addresses)
-
-    const address =
-      addresses.value && user.defaultAddress && user.defaultAddress > 0
-        ? addresses.value[user.defaultAddress]
-        : undefined
+    const user = ref(userInfo.user)
+    const addresses = ref(user.value.addresses)
 
     function onEditAddress(index: number) {
+      const address = addresses.value ? addresses.value[index] : undefined
       router.push({
         name: 'AddressDetail',
         params: {
           zipCode: address?.zipCode,
-          city: address?.street,
+          city: address?.city,
           street: address?.street,
         },
       })
@@ -67,8 +64,12 @@ export default defineComponent({
 
     const getAddresses = async () => {
       addresses.value = (await getAllAddresses({
-        phone: user.phone,
+        phone: user.value.phone,
       })) as Address[]
+
+      user.value = (await getUserByPhone({
+        phone: user.value.phone,
+      })) as User
     }
     onMounted(getAddresses)
 
