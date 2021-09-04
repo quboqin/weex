@@ -1,17 +1,17 @@
 <template>
   <Header title="编辑信用卡"></Header>
   <div class="mt-14">
-    <div class="bg-white rounded-md p-2 m-4">
+    <div class="bg-indigo-500 rounded-md p-2 m-4">
       <div class="flex justify-between items-center text-center">
-        <p>Card Number</p>
+        <p class="text-white pb-2">Card Number</p>
         <div id="card-number" class="flex-auto px-4 py-2"></div>
       </div>
       <div class="flex justify-between items-center text-center">
-        <p>Expiration Date</p>
+        <p class="text-white pb-2">Expiration Date</p>
         <div id="card-expiry" class="flex-auto px-4 py-2"></div>
       </div>
       <div class="flex justify-between items-center text-center">
-        <p>CVV</p>
+        <p class="text-white pb-2">CVV</p>
         <div id="card-cvc" class="flex-auto px-4 py-2"></div>
       </div>
       <div id="card-errors" role="alert"></div>
