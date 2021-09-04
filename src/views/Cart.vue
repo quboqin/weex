@@ -4,19 +4,19 @@
     <div class="flex justify-between items-center p-2 pb-0">
       <p class="text-sm text-gray-500">本地配送</p>
       <p class="text-sm text-gray-500">
-        {{ orderList[0].items.length }}件商品共:
+        {{ items.length }}件商品共:
         <span class="text-base text-gray-800 font-semibold">
-          ${{ orderList[0].totalPrice }}</span
+          ${{ totalPrice }}</span
         >
       </p>
     </div>
     <div class="flex justify-between items-center p-2 pb-0">
-      <p class="text-sm text-blue-700">{{ orderList[0].deliverDate }}</p>
+      <p class="text-sm text-blue-700">{{ deliverDate }}</p>
       <p class="text-sm text-gray-500">免费配送</p>
     </div>
     <hr class="bg-gray-800 my-2" />
     <CartItemCell
-      v-for="(item, index) in orderList[0].items"
+      v-for="(item, index) in items"
       :item="item"
       :key="index"
     ></CartItemCell>
@@ -28,19 +28,20 @@
     <div></div>
     <div class="text-white font-semibold text-lg my-2">去结算</div>
     <div class="rounded-full bg-blue-700 mr-2 px-2 py-1 text-white text-sm">
-      ${{ orderList[0].totalPrice }}
+      ${{ totalPrice }}
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
 import CartItemCell from '@/components/CartItemCell.vue'
 
-import orderList from '@/mock/orders.json'
+import { userAuthInject } from '@/store/user'
+import { Item } from 'quboqin-lib-typescript/lib/item'
 
 export default defineComponent({
   name: 'Cart',
@@ -50,13 +51,21 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const { userInfo } = userAuthInject()
 
     const state = reactive({
-      orderList,
+      deliverDate: userInfo.cart?.deliverDate,
+      totalPrice: userInfo.cart?.totalPrice,
+      items: userInfo.cart?.items ? userInfo.cart.items : ([] as Item[]),
     })
 
     function onCheckout() {
-      router.push('checkout')
+      router.push({
+        name: 'Checkout',
+        params: {
+          totalPrice: state.totalPrice,
+        },
+      })
     }
 
     return {

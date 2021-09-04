@@ -7,6 +7,7 @@ import { defineComponent, onMounted, reactive } from 'vue'
 
 import { userAuthProvide, UserInfo } from '@/store/user'
 import { User } from 'quboqin-lib-typescript/lib/user'
+import { Item } from 'quboqin-lib-typescript/lib/item'
 import { checkHealth } from '@/apis/health'
 
 export default defineComponent({
@@ -14,6 +15,12 @@ export default defineComponent({
   setup() {
     const newUser: UserInfo = reactive({
       user: new User(),
+      cart: {
+        deliverDate: '2-2-2008',
+        totalPrice: 0.0,
+        tax: 0.0,
+        items: [] as Item[],
+      },
     })
     newUser.user.phone = '+13233013227'
     userAuthProvide(newUser)

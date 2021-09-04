@@ -7,8 +7,6 @@ export const stripe = Stripe(
 
 export const elements = stripe.elements()
 
-console.log(import.meta.env.VITE_APP_ONLINE_PAYMENT)
-
 const elementStyles = {
   base: {
     color: '#32325D',

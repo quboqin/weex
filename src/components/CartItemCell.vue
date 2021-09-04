@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center px-2">
     <div class="flex justify-start items-center">
       <img
-        :src="item.img"
+        :src="item.imgUrl"
         alt=""
         class="w-12 h-12 rounded-md"
         style="object-fit: cover"
@@ -34,6 +34,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+
+import { Item } from 'quboqin-lib-typescript/lib/item'
 
 export default defineComponent({
   name: 'CartItemCell',

@@ -91,11 +91,11 @@
       </div>
       <div class="flex justify-between py-1">
         <p>小费</p>
-        <p class="text-right">$2.00</p>
+        <p class="text-right">$0.00</p>
       </div>
       <div class="flex justify-between py-1">
         <p>合计</p>
-        <p class="text-right">$50.00</p>
+        <p class="text-right">${{ totalPrice }}</p>
       </div>
     </div>
     <div
@@ -113,18 +113,22 @@
       <div></div>
       <div class="text-white font-semibold text-lg my-2">付款</div>
       <div class="rounded-full bg-blue-700 mr-2 px-2 py-1 text-white text-sm">
-        ${{ orderList[0].totalPrice }}
+        ${{ totalPrice }}
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 
 import Header from '@/components/HeaderWithBack.vue'
 
-import orderList from '@/mock/orders.json'
+import { userAuthInject } from '@/store/user'
+import { payOrder } from '@/apis/order'
+import { getUserByPhone } from '@/apis/user'
+import { Card } from 'quboqin-lib-typescript/lib/card'
+import { User } from 'quboqin-lib-typescript/lib/user'
 import addresses from '@/mock/addesses.json'
 
 export default defineComponent({
@@ -133,12 +137,34 @@ export default defineComponent({
     Header,
   },
   setup() {
+    const { userInfo, setUserInfo } = userAuthInject()
+
     const state = reactive({
-      orderList,
+      totalPrice: userInfo.cart?.totalPrice,
       addresses,
+      creditCard: userInfo.user.cards ? userInfo.user.cards[0] : new Card(),
     })
 
-    function onPay() {}
+    async function onPay() {
+      await payOrder({
+        last4: state.creditCard.last4,
+        amount: userInfo.cart?.totalPrice,
+        phone: userInfo.user.phone,
+        items: userInfo.cart?.items,
+      })
+    }
+
+    const init = async () => {
+      const user = (await getUserByPhone({
+        phone: userInfo.user.phone,
+      })) as User
+
+      setUserInfo({
+        cognitoUser: userInfo.cognitoUser,
+        user: user,
+      })
+    }
+    onMounted(init)
 
     return {
       ...toRefs(state),

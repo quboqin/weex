@@ -29,7 +29,7 @@
       <div class="text-base text-left text-red-500 font-semibold pl-2">
         ${{ item.price }}
       </div>
-      <p class="mdi mdi-plus-circle-outline text-2xl" @click="onAdd"></p>
+      <p class="mdi mdi-plus-circle-outline text-2xl" @click="onAdd()"></p>
     </div>
   </div>
 </template>
@@ -47,9 +47,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     function onAdd() {
-      console.log(`add this ${props.item.name} into cart`)
+      emit('add-cart')
     }
 
     return {

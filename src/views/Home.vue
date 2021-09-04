@@ -27,10 +27,11 @@
       >
         <div class="flex flex-wrap justify-start">
           <GoodCell
-            v-for="item in goods"
+            v-for="(item, index) in goods"
             :key="item.id"
             :item="item"
             class="w-1/2"
+            @add-cart="addLocalCart(index)"
           >
           </GoodCell>
         </div>
@@ -50,7 +51,9 @@ import TabBar from '@/components/Tabbar.vue'
 
 import category from '@/mock/category.json'
 import { Good } from 'quboqin-lib-typescript/lib/goods'
+import { Item } from 'quboqin-lib-typescript/lib/item'
 import { getAllGoods } from '@/apis/goods'
+import { userAuthInject } from '@/store/user'
 
 export default defineComponent({
   name: 'Home',
@@ -61,6 +64,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const { addCart } = userAuthInject()
 
     const state = reactive({
       category,
@@ -71,6 +75,16 @@ export default defineComponent({
 
     function onCart() {
       router.push('cart')
+    }
+
+    function addLocalCart(index: number) {
+      const item = new Item()
+      item.amount = 1
+      item.goodsId = state.goods[index].id
+      item.imgUrl = state.goods[index].imgUrl
+      item.price = state.goods[index].price
+      item.name = state.goods[index].name
+      addCart(item)
     }
 
     watch(
@@ -88,6 +102,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       onCart,
+      addLocalCart,
     }
   },
 })
