@@ -20,8 +20,11 @@
             <van-field v-model="lastName" type="text" label="Last Name" />
             <van-field v-model="code" type="digit" label="验证码">
               <template v-slot:button>
-                <van-button round type="danger" size="mini" @click="onSignIn"
+                <van-button round type="danger" size="mini" @click="onSignIn" v-if="!disabled"
                   >获取验证码</van-button
+                >
+                <van-button disabled round type="danger" size="mini" @click="onSignIn" v-else
+                  >获取验证码( {{ count }}s)</van-button
                 >
               </template>
             </van-field>
@@ -31,7 +34,10 @@
     </van-tabs>
 
     <div class="mx-4 mt-4">
-      <van-button round type="success" size="large" @click="onSubmitOTP"
+      <van-button round type="success" size="large" @click="onSubmitOTP" v-if="disabled"
+        >立即登录</van-button
+      >
+      <van-button disabled round type="success" size="large" @click="onSubmitOTP" v-else
         >立即登录</van-button
       >
     </div>
@@ -58,6 +64,8 @@ export default defineComponent({
     const router = useRouter()
     const { userInfo, setCognitoUser, setUserInfo } = userAuthInject()
 
+    const maxCount = 120
+
     const state = reactive({
       phone: userInfo.user.phone,
       firstName: userInfo.user.firstName,
@@ -65,6 +73,9 @@ export default defineComponent({
       email: userInfo.user.email,
       code: '',
       active: 0,
+      disabled: false,
+      count: maxCount,
+
     })
 
     async function onSignIn(): Promise<void> {
@@ -76,6 +87,16 @@ export default defineComponent({
           state.lastName,
         )
 
+        state.disabled = true
+        const limitedInterval = setInterval(() => {
+          state.count--
+          if (state.count === 0) {
+            state.disabled = false
+            clearInterval(limitedInterval)
+            state.count = maxCount
+          }
+        }, 1000);
+
         setCognitoUser(cognitoUser)
       } catch (error) {
         console.log(error.message)
@@ -85,6 +106,8 @@ export default defineComponent({
 
     function onReset(): void {
       state.phone = ''
+      state.firstName = ''
+      state.lastName = ''
       console.log(`onReset`)
     }
 

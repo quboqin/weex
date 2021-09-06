@@ -11,6 +11,8 @@ export interface UserInfo {
     items?: Item[]
     totalPrice: number
     tax: number
+    tips: number
+    deliverFee: number
     deliverDate: string
   }
 }

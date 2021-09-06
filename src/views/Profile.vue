@@ -160,6 +160,7 @@ export default defineComponent({
       setUserInfo({
         user: new User(),
         cognitoUser: undefined,
+        cart: undefined,
       })
       router.push({
         path: '/',

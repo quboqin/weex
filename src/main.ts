@@ -18,6 +18,7 @@ import {
   Button,
   Image,
   Checkbox,
+  Badge,
 } from 'vant'
 
 const app = createApp(App)
@@ -33,5 +34,6 @@ app
   .use(Button)
   .use(Image)
   .use(Checkbox)
+  .use(Badge)
 
 app.mount('#app')

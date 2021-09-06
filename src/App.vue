@@ -13,16 +13,23 @@ import { checkHealth } from '@/apis/health'
 export default defineComponent({
   name: 'App',
   setup() {
+    const user = new User()
+    user.phone = '+13233013227'
+    user.firstName = 'Qubo'
+    user.lastName = 'Qin'
+
     const newUser: UserInfo = reactive({
-      user: new User(),
+      user: user,
       cart: {
+        deliverFee: 0.0,
         deliverDate: '2-2-2008',
         totalPrice: 0.0,
         tax: 0.0,
+        tips: 0.0,
         items: [] as Item[],
       },
     })
-    newUser.user.phone = '+13233013227'
+
     userAuthProvide(newUser)
 
     const init = async () => {

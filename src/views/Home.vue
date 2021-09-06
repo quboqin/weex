@@ -15,13 +15,15 @@
     </template>
 
     <template #right>
-      <p class="mdi mdi-cart" @click="onCart"></p>
+      <van-badge :content="itemCount">
+        <p class="mdi mdi-cart" @click="onCart"></p>
+      </van-badge>
     </template>
   </Header>
   <div class="mt-14">
     <van-tabs v-model:active="active" background="#fee2e2" @change="onChangeTab($event)" ref="tabsRef">
       <van-tab
-        v-for="(item, index) in category"
+        v-for="(item, index) in categories"
         :title="item"
         :key="index"
       >
@@ -31,7 +33,7 @@
             :key="_item.id"
             :item="_item"
             class="w-1/2"
-            @add-cart="addLocalCart(index)"
+            @add-cart="addItem(index)"
           >
           </GoodCell>
         </div>
@@ -64,14 +66,16 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { addCart } = userAuthInject()
+    const { userInfo, addCart } = userAuthInject()
+
+    const categories = Object.values(Category)
 
     const tabsRef = ref<TabsInstance>()
 
     const state = reactive({
-      category: Object.values(Category),
       goods: [] as Good[],
       searchQuery: '',
+      itemCount: userInfo.cart?.items ? userInfo.cart.items.length : 0,
       active: 0,
     })
 
@@ -95,7 +99,7 @@ export default defineComponent({
       }
     }
 
-    function addLocalCart(index: number) {
+    function addItem(index: number) {
       const item = new Item()
       item.amount = 1
       item.goodsId = state.goods[index].id
@@ -103,6 +107,7 @@ export default defineComponent({
       item.price = state.goods[index].price
       item.name = state.goods[index].name
       addCart(item)
+      state.itemCount++
     }
 
     function onChangeTab(index: number) {
@@ -124,11 +129,12 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      categories,
+      tabsRef,
       onCart,
-      addLocalCart,
+      addItem,
       goodsMatchingCategory,
       onChangeTab,
-      tabsRef,
     }
   },
 })
