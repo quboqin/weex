@@ -30,17 +30,17 @@
     >
       <div class="w-2/3">
         <div class="text-left font-semibold text-base text-gray-800">
-          {{ `${addresses[0].firstName} ${addresses[0].lastName}` }}
+          {{ `${user.firstName} ${user.lastName}` }}
         </div>
         <div class="text-left text-xs text-gray-400 overflow-ellipsis">
-          {{ addresses[0].address }}
+          {{ address.street }}
         </div>
         <br />
         <div class="text-left text-xs text-gray-400 overflow-ellipsis">
-          {{ addresses[0].email }}
+          {{ address.zipCode }}
         </div>
         <div class="text-left text-xs text-gray-400 overflow-ellipsis">
-          {{ addresses[0].tel }}
+          {{ address.city }}
         </div>
       </div>
       <p class="mdi mdi-chevron-right text-3xl text-center leading-none"></p>
@@ -59,7 +59,7 @@
       "
     >
       <div class="text-left text-xs text-gray-400 overflow-ellipsis">
-        请选择您的支付方式
+        请选择您的支付方式 {{ `${creditCard.brand} ${creditCard.expirationMonth}/${creditCard.expirationYear}`  }}
       </div>
       <p class="mdi mdi-chevron-right text-3xl text-center leading-none"></p>
     </div>
@@ -95,7 +95,7 @@
       </div>
       <div class="flex justify-between py-1">
         <p>合计</p>
-        <p class="text-right">${{ totalPrice }}</p>
+        <p class="text-right">${{ totalPrice?.toFixed(2) }}</p>
       </div>
     </div>
     <div
@@ -113,14 +113,15 @@
       <div></div>
       <div class="text-white font-semibold text-lg my-2">付款</div>
       <div class="rounded-full bg-blue-700 mr-2 px-2 py-1 text-white text-sm">
-        ${{ totalPrice }}
+        ${{ totalPrice?.toFixed(2) }}
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted } from 'vue'
+import { defineComponent, Ref, reactive, toRefs, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
 
@@ -129,6 +130,7 @@ import { payOrder } from '@/apis/order'
 import { getUserByPhone } from '@/apis/user'
 import { Card } from 'quboqin-lib-typescript/lib/card'
 import { User } from 'quboqin-lib-typescript/lib/user'
+import { Address } from 'quboqin-lib-typescript/lib/address'
 import addresses from '@/mock/addesses.json'
 
 export default defineComponent({
@@ -137,20 +139,47 @@ export default defineComponent({
     Header,
   },
   setup() {
+    const router = useRouter()
     const { userInfo, setUserInfo } = userAuthInject()
 
     const state = reactive({
       totalPrice: userInfo.cart?.totalPrice,
-      addresses,
-      creditCard: userInfo.user.cards ? userInfo.user.cards[0] : new Card(),
+      user: userInfo.user,
+    })
+
+    const address: Ref<Address> = computed(() => {
+      const defaultAddress = userInfo.user?.defaultAddress
+      if (userInfo.user?.addresses) {
+        const _address = userInfo.user.addresses.find(address => 
+          defaultAddress?.includes(address.id)
+        ) as Address
+        return _address
+      } else {
+        return {} as Address
+      }
+    })
+
+    const creditCard: Ref<Card> = computed(() => {
+      const defaultCard = userInfo.user?.defaultCard
+      if (userInfo.user?.cards) {
+        const _card = userInfo.user.cards.find(card => 
+          defaultCard?.includes(card.last4)
+        ) as Card
+        return _card
+      } else {
+        return {} as Card
+      }
     })
 
     async function onPay() {
       await payOrder({
-        last4: state.creditCard.last4,
+        last4: creditCard.value.last4,
         amount: userInfo.cart?.totalPrice,
         phone: userInfo.user.phone,
         items: userInfo.cart?.items,
+      })
+      router.push({
+        path: '/',
       })
     }
 
@@ -169,6 +198,8 @@ export default defineComponent({
     return {
       ...toRefs(state),
       onPay,
+      address,
+      creditCard,
     }
   },
 })
