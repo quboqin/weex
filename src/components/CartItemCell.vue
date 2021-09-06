@@ -17,12 +17,13 @@
     <div>
       <p
         class="
-          mdi mdi-delete-outline
-          text-2xl text-right
+          mdi mdi-close
+          text-base text-right
           leading-none
           my-1
           text-gray-500
         "
+        @click="onDelete"
       ></p>
       <p class="rounded bg-gray-200 p-2 py-1 my-1 text-right leading-none">
         {{ item.amount }}
@@ -45,6 +46,14 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {},
+  setup(props, { emit }) {
+    function onDelete() {
+      emit('del-item')
+    }
+
+    return {
+      onDelete,
+    }
+  },
 })
 </script>

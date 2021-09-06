@@ -22,6 +22,7 @@ type UserInfoContext = {
   setCognitoUser: (cognitoUser: CognitoUser) => void
   setUserInfo: (newUser: UserInfo) => void
   addCart: (newItem: Item) => void
+  removeItem: (index: number) => void
 }
 
 const UserAuthSymbol = Symbol()
@@ -47,11 +48,25 @@ export const userAuthProvide: (newUser: UserInfo) => void = newUser => {
     }
   }
 
+  const removeItem = (index: number) => {
+    if (userInfo.cart?.items) {
+      userInfo.cart?.items?.splice(index, 1)
+    } 
+    let price = 0.0
+    userInfo.cart?.items?.forEach(item => {
+      price += item.amount * item.price
+    })
+    if (userInfo.cart) {
+      userInfo.cart.totalPrice = price
+    }   
+  }
+
   provide(UserAuthSymbol, {
     userInfo,
     setCognitoUser,
     setUserInfo,
     addCart,
+    removeItem,
   })
 }
 

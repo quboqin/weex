@@ -6,7 +6,7 @@
       <p class="text-sm text-gray-500">
         {{ items.length }}件商品共:
         <span class="text-base text-gray-800 font-semibold">
-          ${{ totalPrice }}</span
+          ${{ totalPrice?.toFixed(2) }}</span
         >
       </p>
     </div>
@@ -19,6 +19,7 @@
       v-for="(item, index) in items"
       :item="item"
       :key="index"
+      @delItem="onDelete(index)"
     ></CartItemCell>
   </div>
   <div
@@ -28,7 +29,7 @@
     <div></div>
     <div class="text-white font-semibold text-lg my-2">去结算</div>
     <div class="rounded-full bg-blue-700 mr-2 px-2 py-1 text-white text-sm">
-      ${{ totalPrice }}
+      ${{ totalPrice?.toFixed(2) }}
     </div>
   </div>
 </template>
@@ -51,7 +52,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { userInfo } = userAuthInject()
+    const { userInfo, removeItem } = userAuthInject()
 
     const state = reactive({
       deliverDate: userInfo.cart?.deliverDate,
@@ -68,9 +69,16 @@ export default defineComponent({
       })
     }
 
+    function onDelete (index: number) {
+      console.log(`remove item at ${index}`)
+      removeItem(index)
+      state.totalPrice = userInfo.cart?.totalPrice
+    }
+
     return {
       ...toRefs(state),
       onCheckout,
+      onDelete,
     }
   },
 })
