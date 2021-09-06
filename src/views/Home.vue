@@ -6,7 +6,7 @@
 
     <template #default>
       <van-search
-        v-model="searchValue"
+        v-model="searchQuery"
         placeholder="请输入要搜索的商品"
         background="#4fc08d00"
         shape="round"
@@ -19,17 +19,17 @@
     </template>
   </Header>
   <div class="mt-14">
-    <van-tabs v-model:active="active" background="#fee2e2">
+    <van-tabs v-model:active="active" background="#fee2e2" @change="onChangeTab($event)" ref="tabsRef">
       <van-tab
         v-for="(item, index) in category"
-        :title="item.name"
+        :title="item"
         :key="index"
       >
         <div class="flex flex-wrap justify-start">
           <GoodCell
-            v-for="(item, index) in goods"
-            :key="item.id"
-            :item="item"
+            v-for="(_item, index) in goodsMatchingCategory(item)"
+            :key="_item.id"
+            :item="_item"
             class="w-1/2"
             @add-cart="addLocalCart(index)"
           >
@@ -42,15 +42,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, toRefs, onMounted } from 'vue'
+import { defineComponent, ref, reactive, watch, toRefs, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import type { TabsInstance } from 'vant'
 
 import Header from '@/components/Header.vue'
 import GoodCell from '@/components/GoodCell.vue'
 import TabBar from '@/components/Tabbar.vue'
 
-import category from '@/mock/category.json'
-import { Good } from 'quboqin-lib-typescript/lib/goods'
+import { Good, Category } from 'quboqin-lib-typescript/lib/goods'
 import { Item } from 'quboqin-lib-typescript/lib/item'
 import { getAllGoods } from '@/apis/goods'
 import { userAuthInject } from '@/store/user'
@@ -66,15 +66,33 @@ export default defineComponent({
     const router = useRouter()
     const { addCart } = userAuthInject()
 
+    const tabsRef = ref<TabsInstance>()
+
     const state = reactive({
-      category,
+      category: Object.values(Category),
       goods: [] as Good[],
-      searchValue: '',
+      searchQuery: '',
       active: 0,
     })
 
     function onCart() {
       router.push('cart')
+    }
+
+    function goodsMatchingCategory(category: string)  {
+      if (category === Category.ALL) {
+        if (state.searchQuery === '') {
+          return state.goods
+        } else {
+          return state.goods.filter(item => {
+            return item.name.toLowerCase().includes(state.searchQuery.toLowerCase())
+          })
+        }
+      } else {
+        return state.goods.filter(item => {
+          return item.category.includes(category)
+        })
+      }
     }
 
     function addLocalCart(index: number) {
@@ -87,10 +105,15 @@ export default defineComponent({
       addCart(item)
     }
 
+    function onChangeTab(index: number) {
+      console.log(`${Object.values(Category)[index]}`)
+    }
+
     watch(
-      () => state.searchValue,
+      () => state.searchQuery,
       newValue => {
         console.log('The new search value is: ' + newValue)
+        tabsRef.value?.scrollTo(0)
       },
     )
 
@@ -103,6 +126,9 @@ export default defineComponent({
       ...toRefs(state),
       onCart,
       addLocalCart,
+      goodsMatchingCategory,
+      onChangeTab,
+      tabsRef,
     }
   },
 })
