@@ -28,6 +28,16 @@ type UserInfoContext = {
 const UserAuthSymbol = Symbol()
 
 export const userAuthProvide: (newUser: UserInfo) => void = newUser => {
+  function updateTotalPrice() {
+    let price = 0.0
+    userInfo.cart?.items?.forEach(item => {
+      price += item.amount * item.price
+    })
+    if (userInfo.cart) {
+      userInfo.cart.totalPrice = price
+    }
+  }
+
   const userInfo = reactive<UserInfo>(newUser)
 
   const setCognitoUser = (cognitoUser: CognitoUser) =>
@@ -39,26 +49,12 @@ export const userAuthProvide: (newUser: UserInfo) => void = newUser => {
 
   const addCart = (newItem: Item) => {
     userInfo.cart?.items?.push(newItem)
-    let price = 0.0
-    userInfo.cart?.items?.forEach(item => {
-      price += item.amount * item.price
-    })
-    if (userInfo.cart) {
-      userInfo.cart.totalPrice = price
-    }
+    updateTotalPrice()
   }
 
   const removeItem = (index: number) => {
-    if (userInfo.cart?.items) {
-      userInfo.cart?.items?.splice(index, 1)
-    } 
-    let price = 0.0
-    userInfo.cart?.items?.forEach(item => {
-      price += item.amount * item.price
-    })
-    if (userInfo.cart) {
-      userInfo.cart.totalPrice = price
-    }   
+    userInfo.cart?.items?.splice(index, 1)
+    updateTotalPrice()
   }
 
   provide(UserAuthSymbol, {
