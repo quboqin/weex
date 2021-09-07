@@ -20,10 +20,21 @@
             <van-field v-model="lastName" type="text" label="Last Name" />
             <van-field v-model="code" type="digit" label="验证码">
               <template v-slot:button>
-                <van-button round type="danger" size="mini" @click="onSignIn" v-if="!disabled"
+                <van-button
+                  round
+                  type="danger"
+                  size="mini"
+                  @click="onSignIn"
+                  v-if="!disabled"
                   >获取验证码</van-button
                 >
-                <van-button disabled round type="danger" size="mini" @click="onSignIn" v-else
+                <van-button
+                  disabled
+                  round
+                  type="danger"
+                  size="mini"
+                  @click="onSignIn"
+                  v-else
                   >获取验证码( {{ count }}s)</van-button
                 >
               </template>
@@ -34,10 +45,21 @@
     </van-tabs>
 
     <div class="mx-4 mt-4">
-      <van-button round type="success" size="large" @click="onSubmitOTP" v-if="disabled"
+      <van-button
+        round
+        type="success"
+        size="large"
+        @click="onSubmitOTP"
+        v-if="disabled"
         >立即登录</van-button
       >
-      <van-button disabled round type="success" size="large" @click="onSubmitOTP" v-else
+      <van-button
+        disabled
+        round
+        type="success"
+        size="large"
+        @click="onSubmitOTP"
+        v-else
         >立即登录</van-button
       >
     </div>
@@ -53,7 +75,7 @@ import Header from '@/components/HeaderWithBack.vue'
 import { createUser } from '@/apis/user'
 import { userAuthInject } from '@/store/user'
 import { signIn, sendCustomChallengeAnswer } from '@/utils/aws-auth'
-import { User, UserGender } from 'quboqin-lib-typescript/lib/user'
+import { User } from 'quboqin-lib-typescript/lib/user'
 
 export default defineComponent({
   name: 'Sign',
@@ -75,7 +97,6 @@ export default defineComponent({
       active: 0,
       disabled: false,
       count: maxCount,
-
     })
 
     async function onSignIn(): Promise<void> {
@@ -95,7 +116,7 @@ export default defineComponent({
             clearInterval(limitedInterval)
             state.count = maxCount
           }
-        }, 1000);
+        }, 1000)
 
         setCognitoUser(cognitoUser)
       } catch (error) {
@@ -104,12 +125,12 @@ export default defineComponent({
       console.log(`onSignIn - setCognitoUser`)
     }
 
-    function onReset(): void {
-      state.phone = ''
-      state.firstName = ''
-      state.lastName = ''
-      console.log(`onReset`)
-    }
+    // function onReset(): void {
+    //   state.phone = ''
+    //   state.firstName = ''
+    //   state.lastName = ''
+    //   console.log(`onReset`)
+    // }
 
     async function onSubmitOTP(): Promise<void> {
       let cognitoUser = userInfo.cognitoUser

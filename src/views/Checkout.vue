@@ -59,7 +59,10 @@
       "
     >
       <div class="text-left text-xs text-gray-400 overflow-ellipsis">
-        请选择您的支付方式 {{ `${creditCard.brand} ${creditCard.expirationMonth}/${creditCard.expirationYear}`  }}
+        请选择您的支付方式
+        {{
+          `${creditCard.brand} ${creditCard.expirationMonth}/${creditCard.expirationYear}`
+        }}
       </div>
       <p class="mdi mdi-chevron-right text-3xl text-center leading-none"></p>
     </div>
@@ -120,7 +123,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, reactive, toRefs, onMounted, computed } from 'vue'
+import {
+  defineComponent,
+  Ref,
+  reactive,
+  toRefs,
+  onMounted,
+  computed,
+} from 'vue'
 import { useRouter } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
@@ -131,7 +141,6 @@ import { getUserByPhone } from '@/apis/user'
 import { Card } from 'quboqin-lib-typescript/lib/card'
 import { User } from 'quboqin-lib-typescript/lib/user'
 import { Address } from 'quboqin-lib-typescript/lib/address'
-import addresses from '@/mock/addesses.json'
 
 export default defineComponent({
   name: 'Checkout',
@@ -150,8 +159,8 @@ export default defineComponent({
     const address: Ref<Address> = computed(() => {
       const defaultAddress = userInfo.user?.defaultAddress
       if (userInfo.user?.addresses) {
-        const _address = userInfo.user.addresses.find(address => 
-          defaultAddress?.includes(address.id)
+        const _address = userInfo.user.addresses.find(address =>
+          defaultAddress?.includes(address.id),
         ) as Address
         return _address
       } else {
@@ -162,8 +171,8 @@ export default defineComponent({
     const creditCard: Ref<Card> = computed(() => {
       const defaultCard = userInfo.user?.defaultCard
       if (userInfo.user?.cards) {
-        const _card = userInfo.user.cards.find(card => 
-          defaultCard?.includes(card.last4)
+        const _card = userInfo.user.cards.find(card =>
+          defaultCard?.includes(card.last4),
         ) as Card
         return _card
       } else {

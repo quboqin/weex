@@ -4,7 +4,7 @@
     <van-tabs v-model:active="active" background="#fee2e2">
       <van-tab v-for="(item, index) in orderStatus" :title="item" :key="index">
         <OrderCell
-          v-for="(order, index) in orderList"
+          v-for="(order, index) in orders"
           :order="order"
           :key="index"
           class="my-2 mx-4"
@@ -15,12 +15,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 
 import Header from '@/components/HeaderWithBack.vue'
 import OrderCell from '@/components/OrderCell.vue'
 
-import orderList from '@/mock/orders.json'
+import { userAuthInject } from '@/store/user'
+import { Order } from 'quboqin-lib-typescript/lib/order'
+import { getAllOrders } from '@/apis/order'
 
 export default defineComponent({
   name: 'OrderList',
@@ -29,11 +31,20 @@ export default defineComponent({
     OrderCell,
   },
   setup() {
+    const { userInfo } = userAuthInject()
+
     const state = reactive({
       orderStatus: ['全部订单', '待收货', '待发货', '已发货', '已取消'],
-      orderList,
+      orders: [] as Order[],
       active: 0,
     })
+
+    const init = async () => {
+      state.orders = (await getAllOrders({
+        phone: userInfo.user.phone,
+      })) as Order[]
+    }
+    onMounted(init)
 
     return {
       ...toRefs(state),

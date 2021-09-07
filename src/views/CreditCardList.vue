@@ -45,8 +45,7 @@ export default defineComponent({
       cards: userInfo.user.cards ? userInfo.user.cards : [],
     })
 
-    function onEditCreditCard(index: number) {
-      const card = state.cards[index]
+    function onEditCreditCard() {
       router.push({
         name: 'CreditCardDetail',
         params: {

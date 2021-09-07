@@ -2,11 +2,6 @@
 import { Auth } from 'aws-amplify'
 import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js'
 
-export enum LOGIN_METHOD {
-  PHONE = 'Cell Number',
-  EMAIL = 'Email',
-}
-
 async function getUser(): Promise<any> {
   try {
     const user: any = await Auth.currentAuthenticatedUser()
@@ -90,6 +85,7 @@ async function signIn(
     } else {
       console.log(error)
     }
+
     return null
   }
 }

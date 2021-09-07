@@ -1,7 +1,5 @@
 import { result } from '@/utils/axios'
 
-import { User } from 'quboqin-lib-typescript/lib/user'
-
 export function getUserByPhone<T, U>(params: T): Promise<U | void> {
   return result('get', '/users', params)
 }

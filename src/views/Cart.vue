@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, computed } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Header from '@/components/HeaderWithBack.vue'
@@ -69,7 +69,7 @@ export default defineComponent({
       })
     }
 
-    function onDelete (index: number) {
+    function onDelete(index: number) {
       console.log(`remove item at ${index}`)
       removeItem(index)
       state.totalPrice = userInfo.cart?.totalPrice

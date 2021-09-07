@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white rounded-md">
     <div class="flex justify-between items-center px-2 pt-1">
-      <p class="text-sm text-gray-500">到货时间 {{ order.deliverDate }}</p>
+      <p class="text-sm text-gray-500">到货时间 {{ order.deliverAt }}</p>
       <p class="text-sm text-gray-400">{{ order.status }}</p>
     </div>
     <hr class="bg-gray-800 my-2" />
@@ -13,7 +13,7 @@
           class="relative m-2"
         >
           <img
-            :src="item.img"
+            :src="item.imgUrl"
             alt=""
             class="w-12 h-12 rounded-md"
             style="object-fit: cover"
@@ -90,6 +90,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 
+import { Order } from 'quboqin-lib-typescript/lib/order'
+
 export default defineComponent({
   name: 'OrderCell',
   props: {
@@ -98,6 +100,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {},
+  setup() {
+    return {}
+  },
 })
 </script>

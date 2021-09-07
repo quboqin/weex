@@ -5,7 +5,9 @@ import { getCurrentSession, getUser } from '@/utils/aws-auth'
 const port = import.meta.env.VITE_APP_PORT
 const url = import.meta.env.VITE_APP_URL ?? import.meta.env.VITE_APP_BASE_URL
 console.log(import.meta.env.VITE_APP_BASE_URL)
-axios.defaults.baseURL = port ? `${url}:${import.meta.env.VITE_APP_PORT}` : `${url}`
+axios.defaults.baseURL = port
+  ? `${url}:${import.meta.env.VITE_APP_PORT}`
+  : `${url}`
 axios.defaults.timeout = import.meta.env.VITE_APP_TIMEOUT
   ? +import.meta.env.VITE_APP_TIMEOUT
   : 5000
@@ -13,7 +15,7 @@ axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded;charset=UTF-8'
 
 axios.interceptors.request.use(
-  async (config) => {
+  async config => {
     const session = await getCurrentSession()
     if (session) {
       config.headers.Authorization = `Bearer ${session
@@ -24,11 +26,10 @@ axios.interceptors.request.use(
     }
     return config
   },
-  (error) => {
+  error => {
     return Promise.reject(error)
   },
 )
-
 
 function get<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
@@ -36,10 +37,10 @@ function get<T, U>(path: string, params: T): Promise<U> {
       .get(path, {
         params: params,
       })
-      .then((response) => {
+      .then(response => {
         resolve(response.data)
       })
-      .catch((error) => {
+      .catch(error => {
         reject(error)
       })
   })
@@ -49,10 +50,10 @@ function post<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
     axios
       .post(path, params)
-      .then((response) => {
+      .then(response => {
         resolve(response.data)
       })
-      .catch((error) => {
+      .catch(error => {
         reject(error)
       })
   })
@@ -62,10 +63,10 @@ function put<T, U>(path: string, params: T): Promise<U> {
   return new Promise((resolve, reject) => {
     axios
       .put(path, params)
-      .then((response) => {
+      .then(response => {
         resolve(response.data)
       })
-      .catch((error) => {
+      .catch(error => {
         reject(error)
       })
   })
@@ -77,10 +78,10 @@ function del<T, U>(path: string, params: T): Promise<U> {
       .delete(path, {
         params: params,
       })
-      .then((response) => {
+      .then(response => {
         resolve(response.data)
       })
-      .catch((error) => {
+      .catch(error => {
         reject(error)
       })
   })
@@ -100,7 +101,7 @@ export function request<T, U>(
   } else if (method === 'put') {
     return put(path, params)
   } else {
-    return new Promise<void>((resolve) => resolve())
+    return new Promise<void>(resolve => resolve())
   }
 }
 
@@ -112,7 +113,7 @@ export function result<T, U>(
   params: T,
   mockData?: U,
 ): Promise<U | void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     if (mockData) return resolve(mockData)
     return resolve(request(method, path, params))
   })

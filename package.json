@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "build-heroku": "vue-tsc --noEmit && vite build --mode staging",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore ."
+    "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore . --fix"
   },
   "dependencies": {
     "aws-amplify": "^4.2.5",

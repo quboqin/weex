@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, toRefs } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import { Address } from 'quboqin-lib-typescript/lib/address'
 
@@ -53,8 +53,8 @@ export default defineComponent({
     },
     isDefault: {
       type: Boolean,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 })
 </script>

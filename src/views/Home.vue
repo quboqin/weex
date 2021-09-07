@@ -21,12 +21,8 @@
     </template>
   </Header>
   <div class="mt-14">
-    <van-tabs v-model:active="active" background="#fee2e2" @change="onChangeTab($event)" ref="tabsRef">
-      <van-tab
-        v-for="(item, index) in categories"
-        :title="item"
-        :key="index"
-      >
+    <van-tabs v-model:active="active" background="#fee2e2" ref="tabsRef">
+      <van-tab v-for="(item, index) in categories" :title="item" :key="index">
         <div class="flex flex-wrap justify-start">
           <GoodCell
             v-for="(_item, index) in goodsMatchingCategory(item)"
@@ -44,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, watch, toRefs, onMounted, computed } from 'vue'
+import { defineComponent, ref, reactive, watch, toRefs, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TabsInstance } from 'vant'
 
@@ -83,13 +79,15 @@ export default defineComponent({
       router.push('cart')
     }
 
-    function goodsMatchingCategory(category: string)  {
+    function goodsMatchingCategory(category: string) {
       if (category === Category.ALL) {
         if (state.searchQuery === '') {
           return state.goods
         } else {
           return state.goods.filter(item => {
-            return item.name.toLowerCase().includes(state.searchQuery.toLowerCase())
+            return item.name
+              .toLowerCase()
+              .includes(state.searchQuery.toLowerCase())
           })
         }
       } else {
@@ -110,9 +108,9 @@ export default defineComponent({
       state.itemCount++
     }
 
-    function onChangeTab(index: number) {
-      console.log(`${Object.values(Category)[index]}`)
-    }
+    // function onChangeTab(index: number) {
+    //   console.log(`${Object.values(Category)[index]}`)
+    // }
 
     watch(
       () => state.searchQuery,
@@ -134,7 +132,6 @@ export default defineComponent({
       onCart,
       addItem,
       goodsMatchingCategory,
-      onChangeTab,
     }
   },
 })
