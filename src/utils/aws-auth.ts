@@ -62,7 +62,7 @@ async function signIn(
     const user = await Auth.signIn(phoneOrEmail)
     if (user) return user
     return null
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 'UserNotConfirmedException') {
       // The error happens if the user didn't finish the confirmation step when signing up
       // In this case you need to resend the code and confirm the user

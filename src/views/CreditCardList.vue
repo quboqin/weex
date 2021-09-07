@@ -7,7 +7,7 @@
       :key="index"
       :card="card"
       :isDefault="card.last4 === defaultCard"
-      @click="onEditCreditCard(index)"
+      @click="onEditCreditCard()"
       class="my-2 mx-4"
     ></CreditCardCell>
     <div class="text-left mx-4 text-blue-400" @click="onAddCreditCard">

@@ -119,7 +119,8 @@ export default defineComponent({
         }, 1000)
 
         setCognitoUser(cognitoUser)
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.log(error.message)
       }
       console.log(`onSignIn - setCognitoUser`)
@@ -151,7 +152,8 @@ export default defineComponent({
           router.push({
             path: '/profile',
           })
-        } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
           if (error.code === 'UserLambdaValidationException') {
             cognitoUser = await signIn(
               cognitoUser.getUsername(),
