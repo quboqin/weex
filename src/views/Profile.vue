@@ -23,7 +23,7 @@
           round
           width="3rem"
           height="3rem"
-          :src="avatarUrl"
+          src="@/assets/avatar.jpg"
         />
         <div class="ml-2 text-gray-600 text-left">
           <div class="font-semibold">QQB</div>
@@ -47,7 +47,7 @@
       <hr class="bg-gray-800 my-2" />
       <div class="flex justify-between py-2 px-4">
         <div class="" v-for="(type, index) in orderTypes" :key="index">
-          <img class="mx-auto h-8 w-8" :src="orderIcons[index]" />
+          <img class="mx-auto h-8 w-8" src="orderIcons[index]" />
           <div class="text-center text-xs">
             {{ type }}
           </div>
@@ -117,10 +117,6 @@ import { useRouter } from 'vue-router'
 
 import Header from '@/components/Header.vue'
 import TabBar from '@/components/Tabbar.vue'
-import avatarUrl from '@/assets/avatar.jpg'
-import clock from '@/assets/icons8-clock-64.png'
-import box from '@/assets/icons8-box-64.png'
-import trunk from '@/assets/icons8-boot-open-64.png'
 
 import { signOut } from '@/utils/aws-auth'
 import { userAuthInject } from '@/store/user'
@@ -138,9 +134,12 @@ export default defineComponent({
     const { userInfo, setUserInfo } = userAuthInject()
 
     const state = reactive({
-      avatarUrl,
       orderTypes: ['全部订单', '待付款', '待发货'],
-      orderIcons: [clock, box, trunk],
+      orderIcons: [
+        '@/assets/icons8-clock-64.png',
+        '@/assets/icons8-box-64.png',
+        '@/assets/icons8-boot-open-64.png',
+      ],
     })
 
     function onOrderList() {

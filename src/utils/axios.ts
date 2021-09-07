@@ -2,14 +2,12 @@ import axios from 'axios'
 
 import { getCurrentSession, getUser } from '@/utils/aws-auth'
 
-const port = import.meta.env.VITE_APP_PORT
-const url = import.meta.env.VITE_APP_URL ?? import.meta.env.VITE_APP_BASE_URL
-console.log(import.meta.env.VITE_APP_BASE_URL)
-axios.defaults.baseURL = port
-  ? `${url}:${import.meta.env.VITE_APP_PORT}`
-  : `${url}`
-axios.defaults.timeout = import.meta.env.VITE_APP_TIMEOUT
-  ? +import.meta.env.VITE_APP_TIMEOUT
+const port = process.env.VUE_APP_PORT
+const url = process.env.VUE_APP_URL ?? process.env.VUE_APP_BASE_URL
+console.log(process.env.VUE_APP_BASE_URL)
+axios.defaults.baseURL = port ? `${url}:${process.env.VUE_APP_PORT}` : `${url}`
+axios.defaults.timeout = process.env.VUE_APP_TIMEOUT
+  ? +process.env.VUE_APP_TIMEOUT
   : 5000
 axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded;charset=UTF-8'

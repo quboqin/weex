@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
 export const stripe = Stripe(
-  import.meta.env.VITE_APP_ONLINE_PAYMENT === '1'
+  process.env.VUE_APP_ONLINE_PAYMENT === '1'
     ? 'pk_live_51HZCSNLZTTlHwkSOdYTRnFdh0AxF7JNwXShbMrKfEPzxnXLPzGz0hXJJzKxybnWngvF89FKJRXxnr2fo8zpNlZ5700Nm864NNM'
     : 'pk_test_GrY8g9brTmOaRZ6XKks0woG0',
 )
